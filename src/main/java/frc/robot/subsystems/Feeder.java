@@ -5,10 +5,26 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants;
 
 public class Feeder extends SubsystemBase {
+  private CANSparkMax feederMotor;
+
+
   /** Creates a new Feeder. */
-  public Feeder() {}
+  public Feeder() {
+    feederMotor = new CANSparkMax(Constants.FeederMotorID, MotorType.kBrushless);
+  }
+  
+  public void feed(double speed) {
+    feederMotor.set(speed);
+  }
+  
+  public void stop() {
+    feederMotor.set(0);
+  }
 
   @Override
   public void periodic() {

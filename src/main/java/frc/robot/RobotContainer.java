@@ -5,10 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,12 +20,66 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Intake intake = new Intake();
+  private final Shooter shooter = new Shooter();
+  private final Climber climber = new Climber();
+  private final ClimberArms climberArms = new ClimberArms();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Feeder feeder = new Feeder();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final Joystick operatorStick = new Joystick(Constants.OperatorPort);
+  private final Joystick leftStick = new Joystick(Constants.LeftDriverPort);
+  private final Joystick rightStick = new Joystick(Constants.RightDriverPort);
+
+// Intake Commands
+  private final Command intakeCommand = new RunCommand(
+    () -> intake.intake(Constants.IntakeSpeed), intake);
+  private final Command intakeStop = new RunCommand(
+    () -> intake.stop(), intake);
+  
+// Climber ARMS Commands
+  private final Command climberArmsCommand = new RunCommand(
+    () -> climberArms.climbSide(Constants.ClimberArmsSpeed), climberArms);
+  private final Command climberArmsStop = new RunCommand(
+    () -> climberArms.stopSide(), climberArms);
+    
+// Climber MAIN Commands
+  private final Command climberMainCommand = new RunCommand(
+    () -> climber.climbMain(Constants.ClimberMainSpeed), climber);
+  private final Command climberStop = new RunCommand(
+    () -> climber.stopMain(), climber);
+
+// Feeder Commands
+  private final Command feederStop = new RunCommand(
+    () -> feeder.stop(), feeder);
+  private final Command feederCommand = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
+
+//Shooter Commands
+  private final Command shooterStop = new RunCommand(
+    () -> shooter.stop(), shooter);
+  private final Command shooterCommand = new RunCommand(
+    () -> shooter.shoot(), shooter);
+
+// Drivetrain Commands
+  private final Command tankDrive = new RunCommand(
+    () -> drivetrain.tankDrive(-leftStick.getY(), -rightStick.getY()), drivetrain);
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    intake.setDefaultCommand(intakeStop);
+
+    climberArms.setDefaultCommand(climberArmsStop);
+
+    climber.setDefaultCommand(climberStop);
+
+    feeder.setDefaultCommand(feederStop);
+    
+    shooter.setDefaultCommand(shooterStop);
+
+    drivetrain.setDefaultCommand(tankDrive);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -34,7 +90,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(intakeCommand);
+    
+    new JoystickButton(operatorStick, Constants.FeederButton).whileHeld(feederCommand);
+    
+    new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(shooterCommand);
+
+    new JoystickButton(operatorStick, Constants.ClimberArmsButton).whileHeld(climberArmsCommand);
+
+    new JoystickButton(operatorStick, Constants.ClimberMainButton).whileHeld(climberMainCommand);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -43,6 +109,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }

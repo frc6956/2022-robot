@@ -9,28 +9,27 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 
-public class Climber extends SubsystemBase {
-  private CANSparkMax climberMotorMain1;
-  private CANSparkMax climberMotorMain2;
+public class ClimberArms extends SubsystemBase {
+  private CANSparkMax climberMotorSideR;
+  private CANSparkMax climberMotorSideL;
   
   
   /** Creates a new Climber. */
-  public Climber() {
-    climberMotorMain1 = new CANSparkMax(Constants.ClimberMain1ID, MotorType.kBrushless);
-    climberMotorMain2 = new CANSparkMax(Constants.ClimberMain2ID, MotorType.kBrushless);
+  public ClimberArms() {
+    climberMotorSideR = new CANSparkMax(Constants.ClimberSideRID, MotorType.kBrushless);
+    climberMotorSideL = new CANSparkMax(Constants.ClimberSideLID, MotorType.kBrushless);
   }
 
-  public void climbMain(double speed) {
-    climberMotorMain1.set(speed);
-    climberMotorMain2.set(speed);
+  public void climbSide(double speed) {
+    climberMotorSideR.set(speed);
+    climberMotorSideL.set(speed);
   }
 
-  public void stopMain() {
-    climberMotorMain1.set(0);
-    climberMotorMain2.set(0);
+  public void stopSide() {
+    climberMotorSideR.set(0);
+    climberMotorSideL.set(0);
   }
 
-  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

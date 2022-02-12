@@ -5,10 +5,32 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  public Shooter() {}
+  private CANSparkMax ShooterMotorRight; // Creates new motor 
+  private CANSparkMax ShooterMotorLeft;
+  
+  public Shooter() { // Defines both the Ids and the type of motors that were created above
+     ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
+     ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
+  }
+  
+  public void shoot(){ // Sets speed of motors to the speed constants when called upon
+    ShooterMotorLeft.set(Constants.ShooterMotorLeftSpeed);
+    ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
+  }
+
+  public void stop(){ // Stops the motors when calle upon
+    ShooterMotorLeft.set(0);
+    ShooterMotorRight.set(0);
+  }
+
+
 
   @Override
   public void periodic() {
