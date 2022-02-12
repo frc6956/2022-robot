@@ -16,7 +16,7 @@ private CANSparkMax drivetrainMotorL1;
 private CANSparkMax drivetrainMotorL2;
 
   /** Creates a new Drivetrain. */
-  public drivetrain() { 
+  public Drivetrain() { 
     drivetrainMotorR1 = new CANSparkMax(Constants.DrivetrainR1ID, MotorType.kBrushless);
     drivetrainMotorR2 = new CANSparkMax(Constants.DrivetrainR2ID, MotorType.kBrushless);
     drivetrainMotorL1 = new CANSparkMax(Constants.DrivetrainL1ID, MotorType.kBrushless);
