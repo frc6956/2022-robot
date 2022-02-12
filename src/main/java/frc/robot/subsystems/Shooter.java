@@ -18,10 +18,10 @@ public class Shooter extends SubsystemBase {
   public Shooter() { // Defines both the Ids and the type of motors that were created above
      ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
      ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
+     ShooterMotorLeft.follow(ShooterMotorRight, true);
   }
   
   public void shoot(){ // Sets speed of motors to the speed constants when called upon
-    ShooterMotorLeft.set(Constants.ShooterMotorLeftSpeed);
     ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
   }
 

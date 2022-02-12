@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -14,6 +15,7 @@ private CANSparkMax drivetrainMotorR1;
 private CANSparkMax drivetrainMotorR2;
 private CANSparkMax drivetrainMotorL1;
 private CANSparkMax drivetrainMotorL2;
+private DifferentialDrive mainRobotDrive;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() { 
@@ -21,18 +23,18 @@ private CANSparkMax drivetrainMotorL2;
     drivetrainMotorR2 = new CANSparkMax(Constants.DrivetrainR2ID, MotorType.kBrushless);
     drivetrainMotorL1 = new CANSparkMax(Constants.DrivetrainL1ID, MotorType.kBrushless);
     drivetrainMotorL2 = new CANSparkMax(Constants.DrivetrainL2ID, MotorType.kBrushless);
+    mainRobotDrive = new DifferentialDrive(drivetrainMotorL1, drivetrainMotorR1);
+
+    
+    drivetrainMotorR2.follow(drivetrainMotorR1);
+    
+    drivetrainMotorL1.setInverted(true);
+    drivetrainMotorL2.follow(drivetrainMotorL1);
+    
   }
-  public void drivetrainMotorR1 (double speed) {
-    drivetrainMotorR1.set(speed);
-    drivetrainMotorR2.set(speed);
-    drivetrainMotorL1.set(speed);
-    drivetrainMotorL2.set(speed);
-  }
+  
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    drivetrainMotorL1.set(leftSpeed);
-    drivetrainMotorL2.set(leftSpeed);
-    drivetrainMotorR1.set(rightSpeed);
-    drivetrainMotorR2.set(rightSpeed);
+    mainRobotDrive.tankDrive(leftSpeed, rightSpeed);
   }
   @Override
   public void periodic() {
