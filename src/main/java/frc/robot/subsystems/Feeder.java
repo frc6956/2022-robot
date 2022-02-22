@@ -16,6 +16,8 @@ public class Feeder extends SubsystemBase {
   /** Creates a new Feeder. */
   public Feeder() {
     feederMotor = new CANSparkMax(Constants.FeederMotorID, MotorType.kBrushless);
+    feederMotor.restoreFactoryDefaults();
+    feederMotor.setInverted(true);
   }
   
   public void feed(double speed) {

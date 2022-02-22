@@ -25,7 +25,11 @@ public class RobotContainer {
   private final Climber climber = new Climber();
   private final ClimberArms climberArms = new ClimberArms();
   private final Drivetrain drivetrain = new Drivetrain();
-  private final Feeder feeder = new Feeder();
+  private final Feeder feeder = new Feeder(); 
+  
+  private final Vision vision = new Vision();
+
+  private final LEDs leds = new LEDs();
 
   private final Joystick operatorStick = new Joystick(Constants.OperatorPort);
   private final Joystick leftStick = new Joystick(Constants.LeftDriverPort);
@@ -36,6 +40,10 @@ public class RobotContainer {
     () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command intakeStop = new RunCommand(
     () -> intake.stop(), intake);
+
+// LED Commands
+  private final Command ledDefault = new RunCommand(
+    () -> leds.setAllGreen(), leds);
   
 // Climber ARMS Commands
   private final Command climberArmsCommand = new RunCommand(
@@ -49,7 +57,8 @@ public class RobotContainer {
   private final Command climberStop = new RunCommand(
     () -> climber.stopMain(), climber);
 
-// Feeder Commands
+// Feeder Commands 
+
   private final Command feederStop = new RunCommand(
     () -> feeder.stop(), feeder);
   private final Command feederCommand = new RunCommand(
@@ -64,6 +73,9 @@ public class RobotContainer {
 // Drivetrain Commands
   private final Command tankDrive = new RunCommand(
     () -> drivetrain.tankDrive(-leftStick.getY(), -rightStick.getY()), drivetrain);
+
+  private final Command visionSystem = new RunCommand(
+    () -> vision.calculateDistance(), vision);
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -80,6 +92,8 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(tankDrive);
 
+    leds.setDefaultCommand(ledDefault);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -91,11 +105,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
     new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(intakeCommand);
     
     new JoystickButton(operatorStick, Constants.FeederButton).whileHeld(feederCommand);
     
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(shooterCommand);
+
+    new JoystickButton(operatorStick, Constants.VisionButton).whileHeld(visionSystem);
 
     new JoystickButton(operatorStick, Constants.ClimberArmsButton).whileHeld(climberArmsCommand);
 

@@ -26,9 +26,10 @@ private DifferentialDrive mainRobotDrive;
     mainRobotDrive = new DifferentialDrive(drivetrainMotorL1, drivetrainMotorR1);
 
     
+    drivetrainMotorR1.setInverted(true);
     drivetrainMotorR2.follow(drivetrainMotorR1);
     
-    drivetrainMotorL1.setInverted(true);
+    drivetrainMotorL1.setInverted(false);
     drivetrainMotorL2.follow(drivetrainMotorL1);
     
   }
