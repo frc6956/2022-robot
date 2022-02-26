@@ -37,7 +37,7 @@ public class RobotContainer {
 
 // Intake Commands
   private final Command intakeCommand = new RunCommand(
-    () -> intake.intake(Constants.IntakeSpeed), intake);
+    () -> intake.intake(operatorStick.getY()), intake);
   private final Command intakeStop = new RunCommand(
     () -> intake.stop(), intake);
 
@@ -47,13 +47,13 @@ public class RobotContainer {
   
 // Climber ARMS Commands
   private final Command climberArmsCommand = new RunCommand(
-    () -> climberArms.climbSide(Constants.ClimberArmsSpeed), climberArms);
+    () -> climberArms.climbSide(operatorStick.getY()), climberArms);
   private final Command climberArmsStop = new RunCommand(
     () -> climberArms.stopSide(), climberArms);
     
 // Climber MAIN Commands
   private final Command climberMainCommand = new RunCommand(
-    () -> climber.climbMain(Constants.ClimberMainSpeed), climber);
+    () -> climber.climbMain(operatorStick.getY()), climber);
   private final Command climberStop = new RunCommand(
     () -> climber.stopMain(), climber);
 
@@ -76,6 +76,9 @@ public class RobotContainer {
 
   private final Command visionSystem = new RunCommand(
     () -> vision.calculateDistance(), vision);
+  private final Command visionOff = new RunCommand(
+    () -> vision.turnLEDOff(), vision);
+  
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -93,6 +96,10 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(tankDrive);
 
     leds.setDefaultCommand(ledDefault);
+
+    vision.setDefaultCommand(visionOff);
+
+
 
     // Configure the button bindings
     configureButtonBindings();

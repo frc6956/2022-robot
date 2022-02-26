@@ -36,13 +36,14 @@ public class Vision extends SubsystemBase {
   // calculate height
 
   double distance;
-  double ringHeight = 75.0; //104
-  double visionHeight = 43.0; //32
-  double fixedVisionAngle = 0.0;
+  double ringHeight = 104.0; //104
+  double visionHeight = 34.0; //34
+  double fixedVisionAngle = 30;
   double differenceAngleY = ty.getDouble(0.0);
   double totalAngleY = fixedVisionAngle+differenceAngleY;
 
   public void calculateDistance() { // finds the distance based off of the fixed angle and heights
+    turnLEDOn();
     differenceAngleY = ty.getDouble(0.0);
     totalAngleY = fixedVisionAngle+differenceAngleY;
     distance =  (ringHeight-visionHeight) / Math.atan((totalAngleY*Math.PI)/180);
@@ -69,6 +70,5 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
 
-    calculateDistance(); // finds the distance
   }
 }

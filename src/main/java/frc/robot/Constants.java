@@ -23,12 +23,12 @@ public final class Constants {
   public static final double IntakeSpeed = 0.5; 
   // Climber Constants
   public static final int ClimberSideRID = 11; 
-  public static final int ClimberSideLID = 12; 
-  public static final int ClimberMain1ID = 13; 
+  public static final int ClimberSideLID = 13; 
+  public static final int ClimberMain1ID = 12; 
   public static final int ClimberMain2ID = 14; 
 
-  public static final double ClimberArmsSpeed = 1.0;
-  public static final double ClimberMainSpeed = 1.0;
+  public static final double ClimberArmsSpeed = 0.5;
+  public static final double ClimberMainSpeed = 0.5;
   // Shooter Constants
   public static final int ShooterMotorLeftID = 2;
   public static final int ShooterMotorRightID = 4;

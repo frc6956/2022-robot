@@ -9,13 +9,30 @@ import frc.robot.Constants;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private CANSparkMax ShooterMotorRight; // Creates new motor 
   private CANSparkMax ShooterMotorLeft;
   private RelativeEncoder shooterMainEncoder; //creates encoder for one of the motors
+  private SparkMaxPIDController shooterPIDController;
+  final Joystick operatorSJoystick = new Joystick(Constants.LeftDriverPort);
   
+
+    // PID coefficients
+    double kP = 6e-5; 
+    double kI = 0;
+    double kD = 0; 
+    double kIz = 0; 
+    double kFF = 0.000015; 
+    double kMaxOutput = 1; 
+    double kMinOutput = -1;
+    double maxRPM = 6000;
+
   public Shooter() { // Defines both the Ids and the type of motors that were created above
      ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
      ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
@@ -23,7 +40,62 @@ public class Shooter extends SubsystemBase {
      ShooterMotorRight.restoreFactoryDefaults();
      ShooterMotorLeft.follow(ShooterMotorRight, true);
      shooterMainEncoder = ShooterMotorRight.getEncoder();
+     shooterPIDController = ShooterMotorRight.getPIDController();
+  
+         // set PID coefficients
+     shooterPIDController.setP(kP);
+     shooterPIDController.setI(kI);
+     shooterPIDController.setD(kD);
+     shooterPIDController.setIZone(kIz);
+     shooterPIDController.setFF(kFF);
+     shooterPIDController.setOutputRange(kMinOutput, kMaxOutput);
+  
+
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", kMaxOutput);
+    SmartDashboard.putNumber("Min Output", kMinOutput);
   }
+    public void updatePID(){
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);  
+  
+ 
+  
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { shooterPIDController.setP(p); kP = p; }
+    if((i != kI)) { shooterPIDController.setI(i); kI = i; }
+    if((d != kD)) { shooterPIDController.setD(d); kD = d; }
+    if((iz != kIz)) { shooterPIDController.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { shooterPIDController.setFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) { 
+      shooterPIDController.setOutputRange(min, max); 
+      kMinOutput = min; kMaxOutput = max;
+
+    double setPoint = operatorSJoystick.getY()*maxRPM;
+    shooterPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+        
+    SmartDashboard.putNumber("SetPoint", setPoint);
+    SmartDashboard.putNumber("ProcessVariable", shooterMainEncoder.getVelocity());
+
+    if (operatorSJoystick.getRawButton(2)) {
+      ShooterMotorRight.set(0.9);
+    } else {
+      ShooterMotorRight.set(0);
+    }
+    }
+    
+}
   
   public void shoot(){ // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
@@ -40,9 +112,9 @@ public class Shooter extends SubsystemBase {
   }
 
 
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  
   }
 }

@@ -14,15 +14,18 @@ public class Climber extends SubsystemBase {
   private CANSparkMax climberMotorMain2;
   
   
+  
   /** Creates a new Climber. */
   public Climber() {
     climberMotorMain1 = new CANSparkMax(Constants.ClimberMain1ID, MotorType.kBrushless);
     climberMotorMain2 = new CANSparkMax(Constants.ClimberMain2ID, MotorType.kBrushless);
+    climberMotorMain1.restoreFactoryDefaults();
+    climberMotorMain2.restoreFactoryDefaults();
   }
 
   public void climbMain(double speed) {
     climberMotorMain1.set(speed);
-    climberMotorMain2.set(speed);
+    climberMotorMain2.set(-speed);
   }
 
   public void stopMain() {

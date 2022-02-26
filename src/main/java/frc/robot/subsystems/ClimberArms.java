@@ -22,7 +22,7 @@ public class ClimberArms extends SubsystemBase {
 
   public void climbSide(double speed) {
     climberMotorSideR.set(speed);
-    climberMotorSideL.set(speed);
+    climberMotorSideL.set(-speed);
   }
 
   public void stopSide() {
