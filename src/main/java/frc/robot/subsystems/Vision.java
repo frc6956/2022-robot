@@ -6,7 +6,10 @@ package frc.robot.subsystems;
 
 import java.lang.Math;
 
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+//import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -18,6 +21,8 @@ public class Vision extends SubsystemBase {
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
   NetworkTableEntry ledMode = table.getEntry("ledMode");
+
+
   
   /** Creates a new Vision. */
   public Vision() {
@@ -31,6 +36,7 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+  
 
   }
   // calculate height
@@ -41,13 +47,25 @@ public class Vision extends SubsystemBase {
   double fixedVisionAngle = 30;
   double differenceAngleY = ty.getDouble(0.0);
   double totalAngleY = fixedVisionAngle+differenceAngleY;
+  boolean inRange;
+  
 
   public void calculateDistance() { // finds the distance based off of the fixed angle and heights
-    turnLEDOn();
     differenceAngleY = ty.getDouble(0.0);
     totalAngleY = fixedVisionAngle+differenceAngleY;
     distance =  (ringHeight-visionHeight) / Math.atan((totalAngleY*Math.PI)/180);
+    if (Constants.minumumRange<distance && distance<Constants.maximumRange) {
+      inRange = true;
+    } else {
+      inRange = false;
+    }
     System.out.println(distance);
+  }
+
+  public double getDistance(){
+    double gottenDistance;
+    gottenDistance = distance;
+    return gottenDistance;
   }
      
   public void turnLEDOff(){ // turns the green LEDs off
@@ -58,6 +76,9 @@ public class Vision extends SubsystemBase {
     ledMode.setNumber(3);
   }
 
+  
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run//read values periodically
@@ -65,10 +86,14 @@ public class Vision extends SubsystemBase {
     double y = ty.getDouble(0.0);
     double area = ta.getDouble(0.0);
 
+    calculateDistance();
+
     //post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
-
+    SmartDashboard.putNumber("Distance", distance);
+    SmartDashboard.putBoolean("Ramge", inRange);
+    
   }
 }

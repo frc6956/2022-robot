@@ -18,6 +18,8 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private CANSparkMax ShooterMotorRight; // Creates new motor 
   private CANSparkMax ShooterMotorLeft;
+  //private CANSparkMax AuxShooterMotorRight;
+  //private CANSparkMax AuxShooterMotorLeft;
   private RelativeEncoder shooterMainEncoder; //creates encoder for one of the motors
   private SparkMaxPIDController shooterPIDController;
   final Joystick operatorSJoystick = new Joystick(Constants.LeftDriverPort);
@@ -36,9 +38,16 @@ public class Shooter extends SubsystemBase {
   public Shooter() { // Defines both the Ids and the type of motors that were created above
      ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
      ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
+     //AuxShooterMotorLeft = new CANSparkMax(Constants.AuxShooterMoterLeftID, MotorType.kBrushless);
+     //AuxShooterMotorRight = new CANSparkMax(Constants.AuxShooterMoterRightID, MotorType.kBrushless);
+
      ShooterMotorLeft.restoreFactoryDefaults();
      ShooterMotorRight.restoreFactoryDefaults();
+
      ShooterMotorLeft.follow(ShooterMotorRight, true);
+     //AuxShooterMotorRight.follow(ShooterMotorRight, false);
+     //AuxShooterMotorLeft.follow(AuxShooterMotorRight, true);
+
      shooterMainEncoder = ShooterMotorRight.getEncoder();
      shooterPIDController = ShooterMotorRight.getPIDController();
   
@@ -99,16 +108,19 @@ public class Shooter extends SubsystemBase {
   
   public void shoot(){ // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
+    getRPM();
   }
 
   public void stop(){ // Stops the motors when calle upon
     ShooterMotorLeft.set(0);
     ShooterMotorRight.set(0);
+    //AuxShooterMotorRight.set(0);
+    //AuxShooterMotorLeft.set(0);
   }
 
-  public void getRPM(){ // gets the rpm of one of the shooter motors from the sparkMax encoder
+  public double getRPM(){ // gets the rpm of one of the shooter motors from the sparkMax encoder
     shooterMainEncoder = ShooterMotorRight.getEncoder();
-    System.out.println(shooterMainEncoder);
+    return shooterMainEncoder.getVelocity();
   }
 
 

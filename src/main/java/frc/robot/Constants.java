@@ -25,13 +25,15 @@ public final class Constants {
   public static final int ClimberSideRID = 11; 
   public static final int ClimberSideLID = 13; 
   public static final int ClimberMain1ID = 12; 
-  public static final int ClimberMain2ID = 14; 
+  public static final int ClimberMain2ID = 14;
 
-  public static final double ClimberArmsSpeed = 0.5;
-  public static final double ClimberMainSpeed = 0.5;
+  public static final double ClimberArmsSpeed = 0.2;
+  public static final double ClimberMainSpeed = 0.2;
   // Shooter Constants
   public static final int ShooterMotorLeftID = 2;
   public static final int ShooterMotorRightID = 4;
+  public static final int AuxShooterMoterLeftID = 15;
+  public static final int AuxShooterMoterRightID = 16;
   public static final double ShooterMotorLeftSpeed = 0.9;
   public static final double ShooterMotorRightSpeed = 0.9;
   // Drivetrain Constants
@@ -47,10 +49,15 @@ public final class Constants {
   public static final int FeederMotorID = 3;
   public static final double FeederMotorSpeed = 1.0; 
   // Input Button Constants
-  public static final int IntakeButton = 3;
+  public static final int IntakeButton = 11;
+  public static final int IntakeReverseButton = 12;
   public static final int FeederButton = 1; //trigger
   public static final int ShooterButton = 2;
   public static final int ClimberMainButton = 4;
   public static final int ClimberArmsButton = 6;
   public static final int VisionButton = 5;
+  public static final int InRangeButton = 5;
+  // Range Constants
+  public static final int minumumRange = 60;
+  public static final int maximumRange = 120;
 }

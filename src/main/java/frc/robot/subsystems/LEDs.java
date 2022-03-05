@@ -11,16 +11,21 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 public class LEDs extends SubsystemBase {
 
   private AddressableLED m_led;
+ // private AddressableLED m_led2;
+ // private AddressableLED m_led3;
   private AddressableLEDBuffer m_ledBuffer;
+
 
   /** Creates a new LEDs. */
   public LEDs() {
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
     m_led = new AddressableLED(9);
+   // m_led2 = new AddressableLED(8);
+   // m_led3 = new AddressableLED(7);
     // Reuse buffer
-    // Default to a length of 60, start empty output
-    m_ledBuffer = new AddressableLEDBuffer(25);
+    // Default to a length of 60, start empty output // 47
+    m_ledBuffer = new AddressableLEDBuffer(47);
 
     setUpLight();
   }
@@ -28,10 +33,18 @@ public class LEDs extends SubsystemBase {
   public void setUpLight() { // gets LED segment length and sets the data for them
     // Length is expensive to set, so only set it once, then just update data
     m_led.setLength(m_ledBuffer.getLength());
+   // m_led2.setLength(m_ledBuffer.getLength());
+   // m_led3.setLength(m_ledBuffer.getLength());
 
     // Set the data
     m_led.setData(m_ledBuffer);
     m_led.start();
+
+   // m_led2.setData(m_ledBuffer);
+   // m_led2.start();
+
+   // m_led3.setData(m_ledBuffer);
+  //  m_led3.start();
   }
 
   public void setAllGreen(){ // sets all LEDs to green
@@ -41,6 +54,8 @@ public class LEDs extends SubsystemBase {
    }
    
    m_led.setData(m_ledBuffer);
+   //m_led2.setData(m_ledBuffer);
+   //m_led3.setData(m_ledBuffer);
   }
 
   
@@ -106,5 +121,7 @@ public class LEDs extends SubsystemBase {
     setRedToGreen();
     // Set the LEDs
     m_led.setData(m_ledBuffer);
+    //m_led2.setData(m_ledBuffer);
+    //m_led3.setData(m_ledBuffer);
   }
 }
