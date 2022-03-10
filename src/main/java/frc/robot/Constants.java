@@ -34,8 +34,9 @@ public final class Constants {
   public static final int ShooterMotorRightID = 4;
   public static final int AuxShooterMoterLeftID = 15;
   public static final int AuxShooterMoterRightID = 16;
-  public static final double ShooterMotorLeftSpeed = 0.9;
-  public static final double ShooterMotorRightSpeed = 0.9;
+  public static final double ShooterMotorLeftSpeed = 0.50;
+  public static final double ShooterMotorRightSpeed = 0.50;
+  public static final double AuxShooterMotorRightSpeed = 0.75;
   // Drivetrain Constants
   public static final int DrivetrainR1ID = 8;
   public static final int DrivetrainL1ID = 6;
@@ -58,6 +59,6 @@ public final class Constants {
   public static final int VisionButton = 5;
   public static final int InRangeButton = 5;
   // Range Constants
-  public static final int minumumRange = 60;
-  public static final int maximumRange = 120;
+  public static final int minumumRange = 110; // ideal is 120
+  public static final int maximumRange = 125;
 }

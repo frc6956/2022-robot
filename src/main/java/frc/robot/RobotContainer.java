@@ -6,8 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveDistance;
+//import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.cameraserver.CameraServer;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,6 +38,8 @@ public class RobotContainer {
 
   private final LEDs leds = new LEDs();
 
+  //private final PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
+
   private final Joystick operatorStick = new Joystick(Constants.OperatorPort);
   private final Joystick leftStick = new Joystick(Constants.LeftDriverPort);
   private final Joystick rightStick = new Joystick(Constants.RightDriverPort);
@@ -51,7 +56,7 @@ public class RobotContainer {
 
 // LED Commands
   private final Command ledDefault = new RunCommand(
-    () -> leds.setAllGreen(), leds);
+    () -> leds.rainbow(), leds);
   private final Command ledRPMColor = new RunCommand(
     () -> leds.shooterColorSpeed(shooter.getRPM()), leds);
   
@@ -95,15 +100,15 @@ public class RobotContainer {
 // Vision Commands
   private final Command visionSystem = new RunCommand(
     () -> vision.turnLEDOn(), vision);
-  private final Command visionOff = new RunCommand(
-    () -> vision.turnLEDOff(), vision);
+  private final Command visionOff = new VisionOff(vision);
   
 
 // Autonomous Commands
   private final Command shoot = new ParallelCommandGroup(intakeCommand2, feederCommand2, shooterCommand2);
-  private final Command driveBack = new DriveDistance(drivetrain, -40);
+  private final Command driveBack = new DriveDistance(drivetrain, -30);
+  private final Command driveBack2 = new DriveDistance(drivetrain, -10);
   private final Command autoShootDrive = new SequentialCommandGroup(
-    shooterCommand3.withTimeout(3), shoot.withTimeout(5), driveBack.withTimeout(3));
+    driveBack.withTimeout(3), shooterCommand3.withTimeout(2), shoot.withTimeout(2), driveBack2.withTimeout(3));
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -123,6 +128,7 @@ public class RobotContainer {
 
     vision.setDefaultCommand(visionOff);
 
+    //pdh.setSwitchableChannel(true);
 
 
 
