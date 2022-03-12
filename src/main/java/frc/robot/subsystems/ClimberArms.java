@@ -19,14 +19,17 @@ public class ClimberArms extends SubsystemBase {
   public ClimberArms() {
     climberMotorSideR = new CANSparkMax(Constants.ClimberSideRID, MotorType.kBrushless);
     climberMotorSideL = new CANSparkMax(Constants.ClimberSideLID, MotorType.kBrushless);
-    
+
+    climberMotorSideR.restoreFactoryDefaults();
+    climberMotorSideL.restoreFactoryDefaults();
+
     climberMotorSideR.setIdleMode(IdleMode.kBrake);
     climberMotorSideL.setIdleMode(IdleMode.kBrake);
   }
 
   public void climbSide(double speed) {
-    climberMotorSideR.set(speed);
-    climberMotorSideL.set(-speed);
+    climberMotorSideR.set(speed*.5);
+    climberMotorSideL.set(-speed*.5);
   }
 
   public void stopSide() {

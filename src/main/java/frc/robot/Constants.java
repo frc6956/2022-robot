@@ -22,16 +22,16 @@ public final class Constants {
   public static final int IntakeID = 5;
   public static final double IntakeSpeed = 0.5; 
   // Climber Constants
-  public static final int ClimberSideRID = 11; 
-  public static final int ClimberSideLID = 13; 
-  public static final int ClimberMain1ID = 12; 
-  public static final int ClimberMain2ID = 14;
+  public static final int ClimberSideRID = 14; 
+  public static final int ClimberSideLID = 11; 
+  public static final int ClimberMain1ID = 12; //left main
+  public static final int ClimberMain2ID = 13; //right main
 
   public static final double ClimberArmsSpeed = 0.2;
   public static final double ClimberMainSpeed = 0.2;
   // Shooter Constants
-  public static final int ShooterMotorLeftID = 2;
-  public static final int ShooterMotorRightID = 4;
+  public static final int ShooterMotorLeftID = 4;
+  public static final int ShooterMotorRightID = 2;
   public static final int AuxShooterMoterLeftID = 15;
   public static final int AuxShooterMoterRightID = 16;
   public static final double ShooterMotorLeftSpeed = 0.50;

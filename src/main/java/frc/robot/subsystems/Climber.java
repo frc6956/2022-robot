@@ -22,6 +22,7 @@ public class Climber extends SubsystemBase {
     climberMotorMain2 = new CANSparkMax(Constants.ClimberMain2ID, MotorType.kBrushless);
     climberMotorMain1.restoreFactoryDefaults();
     climberMotorMain2.restoreFactoryDefaults();
+    
     climberMotorMain1.setIdleMode(IdleMode.kBrake);
     climberMotorMain2.setIdleMode(IdleMode.kBrake);
   }

@@ -44,8 +44,8 @@ public class Vision extends SubsystemBase {
 
   double distance;
   double ringHeight = 104.0; //104
-  double visionHeight = 34.0; //34
-  double fixedVisionAngle = 30;
+  double visionHeight = 23.5; //34
+  double fixedVisionAngle = 50;
   double differenceAngleY = ty.getDouble(0.0);
   double totalAngleY = fixedVisionAngle+differenceAngleY;
   boolean inRange;

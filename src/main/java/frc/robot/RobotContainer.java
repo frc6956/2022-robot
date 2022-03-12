@@ -30,7 +30,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Climber climber = new Climber();
-  //private final ClimberArms climberArms = new ClimberArms();
+  private final ClimberArms climberArms = new ClimberArms();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Feeder feeder = new Feeder(); 
   
@@ -56,15 +56,15 @@ public class RobotContainer {
 
 // LED Commands
   private final Command ledDefault = new RunCommand(
-    () -> leds.rainbow(), leds);
+    () -> leds.setAllGreen(), leds);
   private final Command ledRPMColor = new RunCommand(
     () -> leds.shooterColorSpeed(shooter.getRPM()), leds);
   
 // Climber ARMS Commands
-  //private final Command climberArmsCommand = new RunCommand(
-    //() -> climberArms.climbSide(operatorStick.getY()), climberArms);
-  //private final Command climberArmsStop = new RunCommand(
-    //() -> climberArms.stopSide(), climberArms);
+  private final Command climberArmsCommand = new RunCommand(
+    () -> climberArms.climbSide(operatorStick.getY()), climberArms);
+  private final Command climberArmsStop = new RunCommand(
+    () -> climberArms.stopSide(), climberArms);
     
 // Climber MAIN Commands
   private final Command climberMainCommand = new RunCommand(
@@ -114,7 +114,7 @@ public class RobotContainer {
   public RobotContainer() {
     intake.setDefaultCommand(intakeStop);
 
-    //climberArms.setDefaultCommand(climberArmsStop);
+    climberArms.setDefaultCommand(climberArmsStop);
 
     climber.setDefaultCommand(climberStop);
 
@@ -152,7 +152,7 @@ public class RobotContainer {
 
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(visionSystem);
 
-    //new JoystickButton(operatorStick, Constants.ClimberArmsButton).whileHeld(climberArmsCommand);
+    new JoystickButton(operatorStick, Constants.ClimberArmsButton).whileHeld(climberArmsCommand);
 
     new JoystickButton(operatorStick, Constants.ClimberMainButton).whileHeld(climberMainCommand);
 
