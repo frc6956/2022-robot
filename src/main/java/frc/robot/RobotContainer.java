@@ -61,8 +61,10 @@ public class RobotContainer {
     () -> leds.shooterColorSpeed(shooter.getRPM()), leds);
   
 // Climber ARMS Commands
-  private final Command climberArmsCommand = new RunCommand(
-    () -> climberArms.climbSide(operatorStick.getY()), climberArms);
+  private final Command climberArmsForward= new RunCommand(
+    () -> climberArms.climbSide(Constants.ClimberArmsReverseSpeed), climberArms);
+  private final Command climberArmsBack= new RunCommand(
+    () -> climberArms.climbSide(Constants.ClimberArmsSpeed), climberArms);
   private final Command climberArmsStop = new RunCommand(
     () -> climberArms.stopSide(), climberArms);
     
@@ -78,6 +80,10 @@ public class RobotContainer {
     () -> feeder.stop(), feeder);
   private final Command feederCommand = new RunCommand(
     () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
+  private final Command feederReverseCommand = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorReverseSpeed), feeder);
+    private final Command feederReverseCommand2 = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorReverseSpeed), feeder);
   private final Command feederCommand2 = new RunCommand(
     () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
 
@@ -124,7 +130,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(tankDrive);
 
-    leds.setDefaultCommand(ledDefault);
+    leds.setDefaultCommand(ledRPMColor);
 
     vision.setDefaultCommand(visionOff);
 
@@ -147,14 +153,20 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     new JoystickButton(operatorStick, Constants.FeederButton).whileHeld(feederCommand);
+
+    new JoystickButton(operatorStick, Constants.FeederReverseButton).whileHeld(feederReverseCommand2);
+
+    new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(feederReverseCommand);
     
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(shooterCommand);
 
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(visionSystem);
 
-    new JoystickButton(operatorStick, Constants.ClimberArmsButton).whileHeld(climberArmsCommand);
+    new JoystickButton(operatorStick, Constants.ClimberArmsButtonForward).whileHeld(climberArmsForward);
 
-    new JoystickButton(operatorStick, Constants.ClimberMainButton).whileHeld(climberMainCommand);
+    new JoystickButton(operatorStick, Constants.ClimberArmsButtonBack).whileHeld(climberArmsBack);
+
+    new JoystickButton(operatorStick, Constants.ClimberMainButtonDown).whileHeld(climberMainCommand);
 
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(ledRPMColor);
 

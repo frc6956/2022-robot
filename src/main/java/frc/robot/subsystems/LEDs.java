@@ -24,7 +24,7 @@ public class LEDs extends SubsystemBase {
   public LEDs() {
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
-    m_led = new AddressableLED(9);
+    m_led = new AddressableLED(1);
 
     // Reuse buffer
     // Default to a length of 60, start empty output // 47
@@ -75,7 +75,7 @@ public class LEDs extends SubsystemBase {
     int shooterMinRPM = 0;
     double hueSpeed;
     int hueSpeedMin = 1;
-    int hueSpeedMax = 6;
+    int hueSpeedMax = 10;
   
     //normalize the rpm and convert a range of 0-6000 to a range of 1-6
   hueSpeed = ((rpm - shooterMinRPM)/(shooterMaxRPM - shooterMinRPM))*(hueSpeedMax - hueSpeedMin) + hueSpeedMin;

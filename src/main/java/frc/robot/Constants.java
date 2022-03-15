@@ -20,7 +20,7 @@ public final class Constants {
   public static final int RightDriverPort = 2;
   // Intake Constants
   public static final int IntakeID = 5;
-  public static final double IntakeSpeed = 0.5; 
+  public static final double IntakeSpeed = 0.75; 
   // Climber Constants
   public static final int ClimberSideRID = 14; 
   public static final int ClimberSideLID = 11; 
@@ -28,15 +28,16 @@ public final class Constants {
   public static final int ClimberMain2ID = 13; //right main
 
   public static final double ClimberArmsSpeed = 0.2;
+  public static final double ClimberArmsReverseSpeed = -0.2;
   public static final double ClimberMainSpeed = 0.2;
   // Shooter Constants
   public static final int ShooterMotorLeftID = 4;
   public static final int ShooterMotorRightID = 2;
   public static final int AuxShooterMoterLeftID = 15;
   public static final int AuxShooterMoterRightID = 16;
-  public static final double ShooterMotorLeftSpeed = 0.50;
-  public static final double ShooterMotorRightSpeed = 0.50;
-  public static final double AuxShooterMotorRightSpeed = 0.75;
+  public static final double ShooterMotorLeftSpeed = 0.5; //50
+  public static final double ShooterMotorRightSpeed = 0.5; //50
+  public static final double AuxShooterMotorRightSpeed = 0.75; //75
   // Drivetrain Constants
   public static final int DrivetrainR1ID = 8;
   public static final int DrivetrainL1ID = 6;
@@ -48,17 +49,26 @@ public final class Constants {
   public static final double DrivetrainL2Speed = 0; //not used
   // Feeder Constants
   public static final int FeederMotorID = 3;
-  public static final double FeederMotorSpeed = 1.0; 
+  public static final double FeederMotorSpeed = 1; 
+  public static final double FeederMotorReverseSpeed = -0.5; 
   // Input Button Constants
   public static final int IntakeButton = 11;
   public static final int IntakeReverseButton = 12;
   public static final int FeederButton = 1; //trigger
+  public static final int FeederReverseButton = 3;
   public static final int ShooterButton = 2;
-  public static final int ClimberMainButton = 4;
-  public static final int ClimberArmsButton = 6;
+  public static final int ClimberMainButtonDown = 4;
+  public static final int ClimberMainButtonUp = 4;
+  public static final int ClimberArmsButtonForward = 9;
+  public static final int ClimberArmsButtonBack = 10;
   public static final int VisionButton = 5;
   public static final int InRangeButton = 5;
   // Range Constants
   public static final int minumumRange = 110; // ideal is 120
   public static final int maximumRange = 125;
+
+  // new tested min = __in from vision target (parallel to ground)
+  // new tested max = 80in from vision target (parallel to ground)
+  // not min but still good = 72in from vision target (parallel to ground)
+
 }

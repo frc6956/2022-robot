@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -18,6 +19,8 @@ private CANSparkMax drivetrainMotorL1;
 private CANSparkMax drivetrainMotorL2;
 private DifferentialDrive mainRobotDrive;
 private RelativeEncoder drivetrainEncoderR1;
+//private SlewRateLimiter filterLeft = new SlewRateLimiter(1.4);
+//private SlewRateLimiter filterRight = new SlewRateLimiter(1.4);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() { 
@@ -36,9 +39,9 @@ private RelativeEncoder drivetrainEncoderR1;
 
     resetPosition();
   }
-  
   double position;
   public void tankDrive(double leftSpeed, double rightSpeed) {
+
     mainRobotDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
