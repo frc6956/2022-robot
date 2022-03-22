@@ -28,8 +28,8 @@ public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
   public Vision() {
     //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
+    double x = tx.getDouble(0.0); //29.8
+    double y = ty.getDouble(0.0); //24.85
     double area = ta.getDouble(0.0);
   
 
@@ -77,7 +77,10 @@ public class Vision extends SubsystemBase {
     ledMode.setNumber(3);
   }
 
-  
+  public double getX(){
+    double xAngle = tx.getDouble(0.0);
+    return xAngle;
+  }
 
 
   @Override

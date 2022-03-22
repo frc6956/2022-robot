@@ -48,12 +48,24 @@ private RelativeEncoder drivetrainEncoderR1;
   public void getInRange(double distance){
     
     if (Constants.minumumRange>distance) {
-      tankDrive(-0.5, -0.5);
+      tankDrive(-0.3, -0.3);
     } else if (Constants.maximumRange<distance){
-      tankDrive(0.5, 0.5);
+      tankDrive(0.3, 0.3);
     } else {
       tankDrive(0, 0);
     }
+  }
+
+
+  public void getInAngleRange(double x){
+    if ( x > 1) {
+      tankDrive(0.3, -0.3);
+    } else if ( x < -3){
+      tankDrive(-0.3, 0.3);
+    } else {
+      tankDrive(0, 0);
+    }
+
   }
 
   public double getPosition(){
@@ -64,6 +76,7 @@ private RelativeEncoder drivetrainEncoderR1;
 
   public void resetPosition() {
     drivetrainEncoderR1.setPosition(0);
+    
   }
   
 

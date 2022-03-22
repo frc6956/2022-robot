@@ -27,16 +27,16 @@ public final class Constants {
   public static final int ClimberMain1ID = 12; //left main
   public static final int ClimberMain2ID = 13; //right main
 
-  public static final double ClimberArmsSpeed = 0.2;
-  public static final double ClimberArmsReverseSpeed = -0.2;
-  public static final double ClimberMainSpeed = 0.2;
+  public static final double ClimberArmsSpeed = 0.25;
+  public static final double ClimberArmsReverseSpeed = -0.25;
+  public static final double ClimberMainSpeed = 0.25;
   // Shooter Constants
   public static final int ShooterMotorLeftID = 4;
   public static final int ShooterMotorRightID = 2;
   public static final int AuxShooterMoterLeftID = 15;
   public static final int AuxShooterMoterRightID = 16;
-  public static final double ShooterMotorLeftSpeed = 0.5; //50
-  public static final double ShooterMotorRightSpeed = 0.5; //50
+  public static final double ShooterMotorLeftSpeed = 0.45; //50
+  public static final double ShooterMotorRightSpeed = 0.45; //50 // auton 50 75
   public static final double AuxShooterMotorRightSpeed = 0.75; //75
   // Drivetrain Constants
   public static final int DrivetrainR1ID = 8;
@@ -62,10 +62,11 @@ public final class Constants {
   public static final int ClimberArmsButtonForward = 9;
   public static final int ClimberArmsButtonBack = 10;
   public static final int VisionButton = 5;
-  public static final int InRangeButton = 5;
+  public static final int InRangeButton = 1;
+  public static final int LEDCelebrateButton = 8;
   // Range Constants
-  public static final int minumumRange = 110; // ideal is 120
-  public static final int maximumRange = 125;
+  public static final int minumumRange = 103; // ideal is 110
+  public static final int maximumRange = 120;
 
   // new tested min = __in from vision target (parallel to ground)
   // new tested max = 80in from vision target (parallel to ground)

@@ -21,6 +21,8 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax AuxShooterMotorRight;
   private CANSparkMax AuxShooterMotorLeft;
   private RelativeEncoder shooterMainEncoder; //creates encoder for one of the motors
+  private RelativeEncoder auxRelativeEncoder; //creates encoder for one of the motors
+
   private SparkMaxPIDController shooterPIDController;
   final Joystick operatorSJoystick = new Joystick(Constants.LeftDriverPort);
   
@@ -53,6 +55,7 @@ public class Shooter extends SubsystemBase {
      AuxShooterMotorLeft.follow(AuxShooterMotorRight, true);
 
      shooterMainEncoder = ShooterMotorRight.getEncoder();
+     auxRelativeEncoder = AuxShooterMotorRight.getEncoder();
      shooterPIDController = ShooterMotorRight.getPIDController();
   
          // set PID coefficients
@@ -99,7 +102,9 @@ public class Shooter extends SubsystemBase {
     shooterPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
         
     SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("ProcessVariable", shooterMainEncoder.getVelocity());
+    SmartDashboard.putNumber("ShooterRPM", shooterMainEncoder.getVelocity());
+    SmartDashboard.putNumber("AuxShooterRPM", auxRelativeEncoder.getVelocity());
+
 
     if (operatorSJoystick.getRawButton(2)) {
       ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
@@ -116,6 +121,12 @@ public class Shooter extends SubsystemBase {
     getRPM();
   }
 
+  public void auotShoot(){ // Sets speed of motors to the speed constants when called upon
+    ShooterMotorRight.set(0.5);
+    AuxShooterMotorRight.set(.75);
+    getRPM();
+  }
+
   public void stop(){ // Stops the motors when calle upon
     ShooterMotorLeft.set(0);
     ShooterMotorRight.set(0);
@@ -128,10 +139,11 @@ public class Shooter extends SubsystemBase {
     return shooterMainEncoder.getVelocity();
   }
 
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ShooterRPM", shooterMainEncoder.getVelocity());
+    SmartDashboard.putNumber("AuxShooterRPM", auxRelativeEncoder.getVelocity());
   
   }
 }

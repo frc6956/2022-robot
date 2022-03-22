@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.sendable.Sendable;
 
 
 /**
@@ -49,16 +52,15 @@ public class RobotContainer {
     () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command intakeCommand2 = new RunCommand(
     () -> intake.intake(Constants.IntakeSpeed), intake);
+  private final Command intakeCommand3 = new RunCommand(
+    () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command intakeStop = new RunCommand(
     () -> intake.stop(), intake);
   private final Command intakeReverse = new RunCommand(
     () -> intake.intake(-(Constants.IntakeSpeed)), intake);
 
 // LED Commands
-  private final Command ledDefault = new RunCommand(
-    () -> leds.setAllGreen(), leds);
-  private final Command ledRPMColor = new RunCommand(
-    () -> leds.shooterColorSpeed(shooter.getRPM()), leds);
+    private final Command ledManager = new LEDManager(leds);
   
 // Climber ARMS Commands
   private final Command climberArmsForward= new RunCommand(
@@ -66,7 +68,7 @@ public class RobotContainer {
   private final Command climberArmsBack= new RunCommand(
     () -> climberArms.climbSide(Constants.ClimberArmsSpeed), climberArms);
   private final Command climberArmsStop = new RunCommand(
-    () -> climberArms.stopSide(), climberArms);
+    () -> climberArms.hold(), climberArms);
     
 // Climber MAIN Commands
   private final Command climberMainCommand = new RunCommand(
@@ -93,15 +95,16 @@ public class RobotContainer {
   private final Command shooterCommand = new RunCommand(
     () -> shooter.shoot(), shooter);
   private final Command shooterCommand2 = new RunCommand(
-    () -> shooter.shoot(), shooter);
+    () -> shooter.auotShoot(), shooter);
   private final Command shooterCommand3 = new RunCommand(
-    () -> shooter.shoot(), shooter);
+    () -> shooter.auotShoot(), shooter);
 
 // Drivetrain Commands
   private final Command tankDrive = new RunCommand(
     () -> drivetrain.tankDrive(-leftStick.getY(), -rightStick.getY()), drivetrain);
   private final Command getInRange = new RunCommand(
-    () -> drivetrain.getInRange(vision.getDistance()));
+    () -> drivetrain.getInAngleRange(vision.getX()));
+   
 
 // Vision Commands
   private final Command visionSystem = new RunCommand(
@@ -111,13 +114,53 @@ public class RobotContainer {
 
 // Autonomous Commands
   private final Command shoot = new ParallelCommandGroup(intakeCommand2, feederCommand2, shooterCommand2);
-  private final Command driveBack = new DriveDistance(drivetrain, -30);
-  private final Command driveBack2 = new DriveDistance(drivetrain, -10);
-  private final Command autoShootDrive = new SequentialCommandGroup(
+  private final Command driveBack = new DriveDistance(drivetrain, -10);
+  private final Command driveBack2 = new DriveDistance(drivetrain, -30);
+  private final Command climberArmsAuto = new RunCommand(
+    () -> climberArms.climbSide(0), climberArms);
+  private final Command autoShootDrive = new SequentialCommandGroup(climberArmsAuto.withTimeout(.1),
     driveBack.withTimeout(3), shooterCommand3.withTimeout(2), shoot.withTimeout(2), driveBack2.withTimeout(3));
+
+    // Auto 2 Ball
+  private final Command shooterCommand5 = new RunCommand(
+    () -> shooter.auotShoot(), shooter);
+  private final Command feederCommand5 = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
   
+  private final Command intakeCommand5 =  new RunCommand(
+    () -> intake.intake(Constants.IntakeSpeed), intake);
+  private final Command intakeCommand6 =  new RunCommand(
+    () -> intake.intake(Constants.IntakeSpeed), intake);
+  private final Command shoot2 = new ParallelCommandGroup(intakeCommand5, feederCommand5, shooterCommand5);
+
+  private final Command driveForward = new DriveDistance(drivetrain, 25); // Get Real value
+  private final Command intakeForward = new ParallelCommandGroup(intakeCommand6, driveForward);
+  private final Command autoTurn = new TurnDistance(drivetrain, 30); //Get Real Value
+  private final Command driveBack3 = new DriveDistance(drivetrain, -20);
+  private final Command driveBack4 = new DriveDistance(drivetrain, -20);
+  private final Command getAutoInRange = new RunCommand(
+    () -> drivetrain.getInRange(vision.getDistance()));
+  private final Command getAutoAngleRange = new RunCommand(
+    () -> drivetrain.getInAngleRange(vision.getX()));
+  private final Command climberArmsAuto2 = new RunCommand(
+    () -> climberArms.climbSide(0), climberArms);
+  
+  private final Command auto2BallDrive = new SequentialCommandGroup(climberArmsAuto2.withTimeout(.1),
+    intakeForward.withTimeout(2), driveBack3.withTimeout(2), autoTurn.withTimeout(3), getAutoAngleRange.withTimeout(2), 
+    getAutoInRange.withTimeout(2.5), shoot2.withTimeout(1.5), driveBack4.withTimeout(2));
+
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    m_chooser.setDefaultOption("1 Ball Auto", autoShootDrive);
+    m_chooser.addOption("2 Ball Auto", auto2BallDrive);
+  
+    SmartDashboard.putData(m_chooser);
+
     intake.setDefaultCommand(intakeStop);
 
     climberArms.setDefaultCommand(climberArmsStop);
@@ -130,11 +173,9 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(tankDrive);
 
-    leds.setDefaultCommand(ledRPMColor);
-
     vision.setDefaultCommand(visionOff);
 
-    //pdh.setSwitchableChannel(true);
+    leds.setDefaultCommand(ledManager);
 
 
 
@@ -157,6 +198,9 @@ public class RobotContainer {
     new JoystickButton(operatorStick, Constants.FeederReverseButton).whileHeld(feederReverseCommand2);
 
     new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(feederReverseCommand);
+
+    new JoystickButton(operatorStick, Constants.FeederButton).whileHeld(intakeCommand3);
+
     
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(shooterCommand);
 
@@ -168,13 +212,13 @@ public class RobotContainer {
 
     new JoystickButton(operatorStick, Constants.ClimberMainButtonDown).whileHeld(climberMainCommand);
 
-    new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(ledRPMColor);
-
     new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(intakeCommand);
 
     new JoystickButton(operatorStick, Constants.IntakeReverseButton).whileHeld(intakeReverse);
 
     new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(getInRange);
+
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInRange);
   }
 
   /**
@@ -184,6 +228,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
   
-    return autoShootDrive;
+    return m_chooser.getSelected();
+    
   }
 }
