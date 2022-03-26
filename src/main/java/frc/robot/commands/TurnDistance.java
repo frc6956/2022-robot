@@ -29,9 +29,9 @@ public class TurnDistance extends CommandBase {
   @Override
   public void execute() {
     if(requestedDistance >= 0) {
-      mdrivetrain.tankDrive(0.4, -0.4);
+      mdrivetrain.tankDrive(-0.5, 0.5);
     } else {
-      mdrivetrain.tankDrive(-0.4, 0.4);
+      mdrivetrain.tankDrive(0.5, -0.5);
     }
   }
 

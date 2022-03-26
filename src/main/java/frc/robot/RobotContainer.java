@@ -15,6 +15,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -124,8 +125,13 @@ public class RobotContainer {
     // Auto 2 Ball
   private final Command shooterCommand5 = new RunCommand(
     () -> shooter.auotShoot(), shooter);
+  private final Command shooterCommand6 = new RunCommand(
+    () -> shooter.auotShoot(), shooter);
   private final Command feederCommand5 = new RunCommand(
     () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
+
+  private final Command feederReverseCommand3 = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorReverseSpeed), feeder);
   
   private final Command intakeCommand5 =  new RunCommand(
     () -> intake.intake(Constants.IntakeSpeed), intake);
@@ -133,9 +139,20 @@ public class RobotContainer {
     () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command shoot2 = new ParallelCommandGroup(intakeCommand5, feederCommand5, shooterCommand5);
 
-  private final Command driveForward = new DriveDistance(drivetrain, 25); // Get Real value
-  private final Command intakeForward = new ParallelCommandGroup(intakeCommand6, driveForward);
-  private final Command autoTurn = new TurnDistance(drivetrain, 30); //Get Real Value
+  private final Command feederStop2 = new RunCommand(
+    () -> feeder.stop(), feeder);
+  private final Command intakeStop2 = new RunCommand(
+    () -> intake.stop(), intake); 
+  private final Command feederStop3 = new RunCommand(
+    () -> feeder.stop(), feeder);
+  private final Command intakeStop3 = new RunCommand(
+    () -> intake.stop(), intake); 
+
+  private final Command driveForward = new DriveDistance(drivetrain, 55); 
+  private final Command intakeForward = new ParallelRaceGroup(intakeCommand6, feederReverseCommand3, driveForward);
+  private final Command shootStop = new ParallelCommandGroup(feederStop2, intakeStop2);
+  private final Command shootStop2 = new ParallelCommandGroup(feederStop3, intakeStop3);
+  private final Command autoTurn = new TurnDistance(drivetrain, 40);
   private final Command driveBack3 = new DriveDistance(drivetrain, -20);
   private final Command driveBack4 = new DriveDistance(drivetrain, -20);
   private final Command getAutoInRange = new RunCommand(
@@ -146,8 +163,8 @@ public class RobotContainer {
     () -> climberArms.climbSide(0), climberArms);
   
   private final Command auto2BallDrive = new SequentialCommandGroup(climberArmsAuto2.withTimeout(.1),
-    intakeForward.withTimeout(2), driveBack3.withTimeout(2), autoTurn.withTimeout(3), getAutoAngleRange.withTimeout(2), 
-    getAutoInRange.withTimeout(2.5), shoot2.withTimeout(1.5), driveBack4.withTimeout(2));
+    intakeForward.withTimeout(10), shootStop.withTimeout(0.1), autoTurn.withTimeout(6), getAutoAngleRange.withTimeout(3), 
+    getAutoInRange.withTimeout(2.5), shooterCommand6.withTimeout(1),shoot2.withTimeout(1.5), shootStop2.withTimeout(0.1), driveBack4.withTimeout(3));
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -173,7 +190,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(tankDrive);
 
-    vision.setDefaultCommand(visionOff);
+    vision.setDefaultCommand(visionSystem);
 
     leds.setDefaultCommand(ledManager);
 
