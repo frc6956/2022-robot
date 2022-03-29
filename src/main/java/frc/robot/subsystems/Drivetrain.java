@@ -47,7 +47,7 @@ private RelativeEncoder drivetrainEncoderR1;
 
   public void getInRange(double distance){
     
-    if (Constants.autpMinumumRange>distance) {
+    if (Constants.autoMinumumRange>distance) {
       tankDrive(-0.3, -0.3);
     } else if (Constants.autoMaximumRange<distance){
       tankDrive(0.3, 0.3);
@@ -67,6 +67,25 @@ private RelativeEncoder drivetrainEncoderR1;
     }
 
   }
+
+  public void getInAllRange(double distance, double xAngle){
+    if (Constants.autoMinumumRange>distance) {
+      tankDrive(-0.3, -0.3);
+    } else if (Constants.autoMaximumRange<distance){
+      tankDrive(0.3, 0.3);
+    } else {
+      tankDrive(0, 0);
+    }
+
+    if ( xAngle > 1) {
+      tankDrive(0.4, -0.4);
+    } else if ( xAngle < -3){
+      tankDrive(-0.4, 0.4);
+    } else {
+      tankDrive(0, 0);
+    }
+  }
+
 
   public double getPosition(){
     position = ((6*Math.PI)*drivetrainEncoderR1.getPosition())/10.7; // getPosition returns number of revolutions of the motor

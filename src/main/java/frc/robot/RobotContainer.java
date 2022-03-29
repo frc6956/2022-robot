@@ -109,6 +109,8 @@ public class RobotContainer {
     () -> drivetrain.getInAngleRange(vision.getX()));
   private final Command getInDistanceRange = new RunCommand(
     () -> drivetrain.getInRange(vision.getDistance()));
+  private final Command getInAllRange = new RunCommand(
+    () -> drivetrain.getInAllRange(vision.getDistance(), vision.getX()));
    
 
 // Vision Commands
@@ -239,7 +241,7 @@ public class RobotContainer {
 
     new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(getInDistanceRange);
 
-    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAngleRange);
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAllRange);
 
     new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(visionSystem);
 
