@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PowerDistribution;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.util.sendable.Sendable;
 
@@ -103,8 +105,10 @@ public class RobotContainer {
 // Drivetrain Commands
   private final Command tankDrive = new RunCommand(
     () -> drivetrain.tankDrive(-leftStick.getY(), -rightStick.getY()), drivetrain);
-  private final Command getInRange = new RunCommand(
+  private final Command getInAngleRange = new RunCommand(
     () -> drivetrain.getInAngleRange(vision.getX()));
+  private final Command getInDistanceRange = new RunCommand(
+    () -> drivetrain.getInRange(vision.getDistance()));
    
 
 // Vision Commands
@@ -190,7 +194,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(tankDrive);
 
-    vision.setDefaultCommand(visionSystem);
+    vision.setDefaultCommand(visionOff);
 
     leds.setDefaultCommand(ledManager);
 
@@ -233,9 +237,17 @@ public class RobotContainer {
 
     new JoystickButton(operatorStick, Constants.IntakeReverseButton).whileHeld(intakeReverse);
 
-    new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(getInRange);
+    new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(getInDistanceRange);
 
-    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInRange);
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAngleRange);
+
+    new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(visionSystem);
+
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(visionSystem);
+
+
+    new Trigger(()->
+    DriverStation.isAutonomous()).whileActiveContinuous(visionSystem);
   }
 
   /**
