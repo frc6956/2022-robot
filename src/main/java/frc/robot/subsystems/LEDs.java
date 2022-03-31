@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 public class LEDs extends SubsystemBase {
 
   private AddressableLED m_led;
-
   private AddressableLEDBuffer m_ledBuffer;
 
   double m_firstPixelHue1 = 15; // sets the beginning hue to red
@@ -32,10 +31,13 @@ public class LEDs extends SubsystemBase {
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
     m_led = new AddressableLED(1);
+    
+
 
     // Reuse buffer
     // Default to a length of 60, start empty output // 47
     m_ledBuffer = new AddressableLEDBuffer(47);
+
 
 
     setUpLight();

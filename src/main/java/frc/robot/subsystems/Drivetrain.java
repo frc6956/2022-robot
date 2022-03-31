@@ -73,11 +73,7 @@ private RelativeEncoder drivetrainEncoderR1;
       tankDrive(-0.3, -0.3);
     } else if (Constants.autoMaximumRange<distance){
       tankDrive(0.3, 0.3);
-    } else {
-      tankDrive(0, 0);
-    }
-
-    if ( xAngle > 1) {
+    } else if ( xAngle > 1) {
       tankDrive(0.4, -0.4);
     } else if ( xAngle < -3){
       tankDrive(-0.4, 0.4);
