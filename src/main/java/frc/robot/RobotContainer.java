@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.util.sendable.Sendable;
 
 
 /**
@@ -98,9 +97,9 @@ public class RobotContainer {
   private final Command shooterCommand = new RunCommand(
     () -> shooter.shoot(), shooter);
   private final Command shooterCommand2 = new RunCommand(
-    () -> shooter.auotShoot(), shooter);
+    () -> shooter.autoShoot(), shooter);
   private final Command shooterCommand3 = new RunCommand(
-    () -> shooter.auotShoot(), shooter);
+    () -> shooter.autoShoot(), shooter);
 
 // Drivetrain Commands
   private final Command tankDrive = new RunCommand(
@@ -113,10 +112,9 @@ public class RobotContainer {
     () -> drivetrain.getInAllRange(vision.getDistance(), vision.getX()));
    
 
-// Vision Commands
-  private final Command visionSystem = new RunCommand(
-    () -> vision.turnLEDOn(), vision);
-  private final Command visionOff = new VisionOff(vision);
+  // Vision Commands
+  private final Command visionOn = new RunCommand(() -> vision.turnLEDOn(), vision);
+  private final Command visionOff = new RunWhenDisabledCommand(() -> vision.turnLEDOff(), vision);
   
 
 // Autonomous Commands
@@ -130,9 +128,9 @@ public class RobotContainer {
 
     // Auto 2 Ball
   private final Command shooterCommand5 = new RunCommand(
-    () -> shooter.auotShoot(), shooter);
+    () -> shooter.autoShoot(), shooter);
   private final Command shooterCommand6 = new RunCommand(
-    () -> shooter.auotShoot(), shooter);
+    () -> shooter.autoShoot(), shooter);
   private final Command feederCommand5 = new RunCommand(
     () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
 
@@ -224,10 +222,9 @@ public class RobotContainer {
 
     new JoystickButton(operatorStick, Constants.FeederButton).whileHeld(intakeCommand3);
 
-    
     new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(shooterCommand);
 
-    new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(visionSystem);
+    new JoystickButton(operatorStick, Constants.ShooterButton).whileHeld(visionOn);
 
     new JoystickButton(operatorStick, Constants.ClimberArmsButtonForward).whileHeld(climberArmsForward);
 
@@ -243,13 +240,12 @@ public class RobotContainer {
 
     new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAllRange);
 
-    new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(visionSystem);
+    new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(visionOn);
 
-    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(visionSystem);
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(visionOn);
 
 
-    new Trigger(()->
-    DriverStation.isAutonomous()).whileActiveContinuous(visionSystem);
+    new Trigger(()-> DriverStation.isAutonomous()).whileActiveContinuous(visionOn);
   }
 
   /**

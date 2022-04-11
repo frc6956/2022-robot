@@ -10,62 +10,57 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Joystick;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private CANSparkMax ShooterMotorRight; // Creates new motor 
+  private CANSparkMax ShooterMotorRight; // Creates new motor
   private CANSparkMax ShooterMotorLeft;
   private CANSparkMax AuxShooterMotorRight;
   private CANSparkMax AuxShooterMotorLeft;
-  private RelativeEncoder shooterMainEncoder; //creates encoder for one of the motors
-  private RelativeEncoder auxRelativeEncoder; //creates encoder for one of the motors
+  private RelativeEncoder shooterMainEncoder; // creates encoder for one of the motors
+  private RelativeEncoder auxRelativeEncoder; // creates encoder for one of the motors
 
   private SparkMaxPIDController shooterPIDController;
-  final Joystick operatorSJoystick = new Joystick(Constants.LeftDriverPort);
-  
 
-    // PID coefficients
-    double kP = 6e-5; 
-    double kI = 0;
-    double kD = 0; 
-    double kIz = 0; 
-    double kFF = 0.000015; 
-    double kMaxOutput = 1; 
-    double kMinOutput = -1;
-    double maxRPM = 6000;
+  // PID coefficients
+  double kP = 6e-5;
+  double kI = 0;
+  double kD = 0;
+  double kIz = 0;
+  double kFF = 0.000015;
+  double kMaxOutput = 1;
+  double kMinOutput = -1;
+  double maxRPM = 6000;
 
   public Shooter() { // Defines both the Ids and the type of motors that were created above
-     ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
-     ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
-     AuxShooterMotorLeft = new CANSparkMax(Constants.AuxShooterMoterLeftID, MotorType.kBrushless);
-     AuxShooterMotorRight = new CANSparkMax(Constants.AuxShooterMoterRightID, MotorType.kBrushless);
+    ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
+    ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
+    AuxShooterMotorLeft = new CANSparkMax(Constants.AuxShooterMoterLeftID, MotorType.kBrushless);
+    AuxShooterMotorRight = new CANSparkMax(Constants.AuxShooterMoterRightID, MotorType.kBrushless);
 
-     ShooterMotorLeft.restoreFactoryDefaults();
-     ShooterMotorRight.restoreFactoryDefaults();
-     AuxShooterMotorLeft.restoreFactoryDefaults();
-     AuxShooterMotorRight.restoreFactoryDefaults();
+    ShooterMotorLeft.restoreFactoryDefaults();
+    ShooterMotorRight.restoreFactoryDefaults();
+    AuxShooterMotorLeft.restoreFactoryDefaults();
+    AuxShooterMotorRight.restoreFactoryDefaults();
 
-     ShooterMotorRight.setInverted(true);
-     ShooterMotorLeft.follow(ShooterMotorRight, true);
-     //AuxShooterMotorRight.follow(ShooterMotorRight, false);
-     AuxShooterMotorRight.setInverted(false);
-     AuxShooterMotorLeft.follow(AuxShooterMotorRight, true);
+    ShooterMotorRight.setInverted(true);
+    ShooterMotorLeft.follow(ShooterMotorRight, true);
+    // AuxShooterMotorRight.follow(ShooterMotorRight, false);
+    AuxShooterMotorRight.setInverted(false);
+    AuxShooterMotorLeft.follow(AuxShooterMotorRight, true);
 
-     shooterMainEncoder = ShooterMotorRight.getEncoder();
-     auxRelativeEncoder = AuxShooterMotorRight.getEncoder();
-     shooterPIDController = ShooterMotorRight.getPIDController();
-  
-         // set PID coefficients
-     shooterPIDController.setP(kP);
-     shooterPIDController.setI(kI);
-     shooterPIDController.setD(kD);
-     shooterPIDController.setIZone(kIz);
-     shooterPIDController.setFF(kFF);
-     shooterPIDController.setOutputRange(kMinOutput, kMaxOutput);
-  
+    shooterMainEncoder = ShooterMotorRight.getEncoder();
+    auxRelativeEncoder = AuxShooterMotorRight.getEncoder();
+    shooterPIDController = ShooterMotorRight.getPIDController();
+
+    // set PID coefficients
+    shooterPIDController.setP(kP);
+    shooterPIDController.setI(kI);
+    shooterPIDController.setD(kD);
+    shooterPIDController.setIZone(kIz);
+    shooterPIDController.setFF(kFF);
+    shooterPIDController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
@@ -76,7 +71,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
   }
-    public void updatePID(){
+
+  public void updatePID() {
     // read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
@@ -84,58 +80,57 @@ public class Shooter extends SubsystemBase {
     double iz = SmartDashboard.getNumber("I Zone", 0);
     double ff = SmartDashboard.getNumber("Feed Forward", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);  
-  
- 
-  
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { shooterPIDController.setP(p); kP = p; }
-    if((i != kI)) { shooterPIDController.setI(i); kI = i; }
-    if((d != kD)) { shooterPIDController.setD(d); kD = d; }
-    if((iz != kIz)) { shooterPIDController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { shooterPIDController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      shooterPIDController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max;
+    double min = SmartDashboard.getNumber("Min Output", 0);
 
-    double setPoint = operatorSJoystick.getY()*maxRPM;
-    shooterPIDController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-        
-    SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("ShooterRPM", shooterMainEncoder.getVelocity());
-    SmartDashboard.putNumber("AuxShooterRPM", auxRelativeEncoder.getVelocity());
-
-
-    if (operatorSJoystick.getRawButton(2)) {
-      ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
-    } else {
-      ShooterMotorRight.set(0);
+    // if PID coefficients on SmartDashboard have changed, write new values to
+    // controller
+    if ((p != kP)) {
+      shooterPIDController.setP(p);
+      kP = p;
     }
+    if ((i != kI)) {
+      shooterPIDController.setI(i);
+      kI = i;
     }
-    
-}
-  
-  public void shoot(){ // Sets speed of motors to the speed constants when called upon
+    if ((d != kD)) {
+      shooterPIDController.setD(d);
+      kD = d;
+    }
+    if ((iz != kIz)) {
+      shooterPIDController.setIZone(iz);
+      kIz = iz;
+    }
+    if ((ff != kFF)) {
+      shooterPIDController.setFF(ff);
+      kFF = ff;
+    }
+    if ((max != kMaxOutput) || (min != kMinOutput)) {
+      shooterPIDController.setOutputRange(min, max);
+      kMinOutput = min;
+      kMaxOutput = max;
+    }
+  }
+
+  public void shoot() { // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
     AuxShooterMotorRight.set(Constants.AuxShooterMotorRightSpeed);
     getRPM();
   }
 
-  public void auotShoot(){ // Sets speed of motors to the speed constants when called upon
+  public void autoShoot() { // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(0.5);
     AuxShooterMotorRight.set(.75);
     getRPM();
   }
 
-  public void stop(){ // Stops the motors when calle upon
+  public void stop() { // Stops the motors when calle upon
     ShooterMotorLeft.set(0);
     ShooterMotorRight.set(0);
     AuxShooterMotorRight.set(0);
     AuxShooterMotorLeft.set(0);
   }
 
-  public double getRPM(){ // gets the rpm of one of the shooter motors from the sparkMax encoder
-    shooterMainEncoder = ShooterMotorRight.getEncoder();
+  public double getRPM() { // gets the rpm of one of the shooter motors from the sparkMax encoder
     return shooterMainEncoder.getVelocity();
   }
 
@@ -144,6 +139,5 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ShooterRPM", shooterMainEncoder.getVelocity());
     SmartDashboard.putNumber("AuxShooterRPM", auxRelativeEncoder.getVelocity());
-  
   }
 }
