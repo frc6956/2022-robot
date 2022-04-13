@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ClimberArms extends SubsystemBase {
   private CANSparkMax climberMotorSideR;
@@ -35,18 +36,22 @@ public class ClimberArms extends SubsystemBase {
     climberMotorSideR.setIdleMode(IdleMode.kBrake);
     climberMotorSideL.setIdleMode(IdleMode.kBrake);
 
+    climberMotorSideR.setInverted(true);
+
     climberLeftEncoder = climberMotorSideL.getEncoder();
     climberRightEncoder = climberMotorSideR.getEncoder();
 
     lastLeftArmPosition = getLeftArmPosition();
     lastRightArmPosition = getRightArmPosition();
+
+    climberMotorSideL.getOutputCurrent();
   }
 
 
 
 
   public void climbSide(double speed) {
-    climberMotorSideR.set(speed*.5);
+    climberMotorSideR.set(-speed*.5);
     climberMotorSideL.set(-speed*.5);
     lastRightArmPosition = getRightArmPosition();
     lastLeftArmPosition = getLeftArmPosition();
@@ -99,9 +104,32 @@ public class ClimberArms extends SubsystemBase {
     return rightPosition;
   }
 
+  public double getLeftArmAngle(){
+    double leftAngle = (climberLeftEncoder.getPosition() / 64)*360;
+    return leftAngle;
+  }
+
+  public double getRightArmAngle(){
+    double rightAngle = (climberRightEncoder.getPosition() / 64)*360;
+    return rightAngle;
+  }
+
+  public void resetArms(){ // - faces back 47-40,  + faces forward 80-73
+    if (getLeftArmAngle() < -40){
+      climberMotorSideL.set(-0.35);
+    }else if (getLeftArmAngle() > 73){
+      climberMotorSideL.set(0.35);
+    }
+
+    // add right side
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Right Arm Angle", getRightArmAngle());
+    SmartDashboard.putNumber("Left Arm Angle", getLeftArmAngle());
+    SmartDashboard.putNumber("Right Arm Current", climberMotorSideR.getOutputCurrent());
+    SmartDashboard.putNumber("Left Arm Current", climberMotorSideL.getOutputCurrent());
   }
 }
