@@ -10,6 +10,7 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 //import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -98,6 +99,6 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("Distance", distance);
     SmartDashboard.putBoolean("Ramge", inRange);
-    
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
   }
 }

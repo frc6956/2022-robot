@@ -65,10 +65,17 @@ public final class Constants {
   public static final int InRangeButton = 1;
   public static final int LEDCelebrateButton = 8;
   // Range Constants
-  public static final int minumumRange = 103; // ideal is 110
-  public static final int maximumRange = 120;
-  public static final int autoMinumumRange = 107; // ideal is 110
-  public static final int autoMaximumRange = 115;
+  /*
+
+
+
+  */
+  //ideal is 110
+  public static final int minumumRange = 95; // 103
+  public static final int maximumRange = 110; // 120
+  //ideal is 110
+  public static final int autoMinumumRange = 90; // 107
+  public static final int autoMaximumRange = 95; // 115
 
   // new tested min = __in from vision target (parallel to ground)
   // new tested max = 80in from vision target (parallel to ground)

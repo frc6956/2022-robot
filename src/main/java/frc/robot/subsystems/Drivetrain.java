@@ -37,6 +37,8 @@ private RelativeEncoder drivetrainEncoderR1;
     drivetrainMotorL1.setInverted(false);
     drivetrainMotorL2.follow(drivetrainMotorL1);
 
+    
+
     resetPosition();
   }
   double position;
@@ -58,9 +60,9 @@ private RelativeEncoder drivetrainEncoderR1;
 
 
   public void getInAngleRange(double x){
-    if ( x > 1) {
+    if ( x > 1.5) {
       tankDrive(0.4, -0.4);
-    } else if ( x < -3){
+    } else if ( x < -1.5){
       tankDrive(-0.4, 0.4);
     } else {
       tankDrive(0, 0);

@@ -48,6 +48,11 @@ public class Shooter extends SubsystemBase {
      AuxShooterMotorLeft.restoreFactoryDefaults();
      AuxShooterMotorRight.restoreFactoryDefaults();
 
+     ShooterMotorLeft.enableVoltageCompensation(12);
+     ShooterMotorRight.enableVoltageCompensation(12);
+     AuxShooterMotorLeft.enableVoltageCompensation(12);
+     AuxShooterMotorRight.enableVoltageCompensation(12);
+
      ShooterMotorRight.setInverted(true);
      ShooterMotorLeft.follow(ShooterMotorRight, true);
      //AuxShooterMotorRight.follow(ShooterMotorRight, false);

@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.util.sendable.Sendable;
 
@@ -39,10 +42,9 @@ public class RobotContainer {
   private final ClimberArms climberArms = new ClimberArms();
   private final Drivetrain drivetrain = new Drivetrain();
   private final Feeder feeder = new Feeder(); 
-  
   private final Vision vision = new Vision();
-
   private final LEDs leds = new LEDs();
+  private final WPI_PigeonIMU gyro = new WPI_PigeonIMU(0);
 
   //private final PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
 
@@ -159,6 +161,7 @@ public class RobotContainer {
   private final Command shootStop = new ParallelCommandGroup(feederStop2, intakeStop2);
   private final Command shootStop2 = new ParallelCommandGroup(feederStop3, intakeStop3);
   private final Command autoTurn = new TurnDistance(drivetrain, 40);
+  private final Command turnRobot = new TurnAngle(drivetrain, gyro, 175);
   private final Command driveBack3 = new DriveDistance(drivetrain, -20);
   private final Command driveBack4 = new DriveDistance(drivetrain, -20);
   private final Command getAutoInRange = new RunCommand(
@@ -169,8 +172,8 @@ public class RobotContainer {
     () -> climberArms.climbSide(0), climberArms);
   
   private final Command auto2BallDrive = new SequentialCommandGroup(climberArmsAuto2.withTimeout(.1),
-    intakeForward.withTimeout(10), shootStop.withTimeout(0.1), autoTurn.withTimeout(6), getAutoAngleRange.withTimeout(3), 
-    getAutoInRange.withTimeout(2.5), shooterCommand6.withTimeout(1),shoot2.withTimeout(1.5), shootStop2.withTimeout(0.1), driveBack4.withTimeout(3));
+    intakeForward.withTimeout(10), shootStop.withTimeout(0.1), turnRobot.withTimeout(6), getAutoAngleRange.withTimeout(3), 
+    getAutoInRange.withTimeout(4), shooterCommand6.withTimeout(1.5),shoot2.withTimeout(1.5), shootStop2.withTimeout(0.1), driveBack4.withTimeout(3));
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -183,6 +186,8 @@ public class RobotContainer {
     m_chooser.addOption("2 Ball Auto", auto2BallDrive);
   
     SmartDashboard.putData(m_chooser);
+
+    SmartDashboard.putData(gyro);
 
     intake.setDefaultCommand(intakeStop);
 
