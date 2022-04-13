@@ -12,18 +12,21 @@ import frc.robot.Constants;
 public class Feeder extends SubsystemBase {
   private CANSparkMax feederMotor;
 
-
   /** Creates a new Feeder. */
   public Feeder() {
     feederMotor = new CANSparkMax(Constants.FeederMotorID, MotorType.kBrushless);
     feederMotor.restoreFactoryDefaults();
     feederMotor.setInverted(true);
   }
-  
+
+  public void feed() {
+    feed(Constants.FeederMotorSpeed);
+  }
+
   public void feed(double speed) {
     feederMotor.set(speed);
   }
-  
+
   public void stop() {
     feederMotor.set(0);
   }
