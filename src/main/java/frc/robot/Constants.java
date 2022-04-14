@@ -64,6 +64,8 @@ public final class Constants {
   public static final int VisionButton = 5;
   public static final int InRangeButton = 1;
   public static final int LEDCelebrateButton = 8;
+  public static final int ClimberLeftMainButton = 6;
+  public static final int ClimberRightMainButton = 5;
   // Range Constants
   /*
 

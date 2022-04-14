@@ -1,5 +1,5 @@
 package frc.robot.commands;
 
-public class Intake {
+public class IntakeBall {
     
 }

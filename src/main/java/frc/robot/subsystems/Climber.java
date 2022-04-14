@@ -32,6 +32,14 @@ public class Climber extends SubsystemBase {
     climberMotorMain2.set(speed);
   }
 
+  public void climbLeft(double speed){
+    climberMotorMain1.set(speed);
+  }
+
+  public void climbRight(double speed){
+    climberMotorMain2.set(-speed); 
+  }
+
   public void stopMain() {
     climberMotorMain1.set(0);
     climberMotorMain2.set(0);

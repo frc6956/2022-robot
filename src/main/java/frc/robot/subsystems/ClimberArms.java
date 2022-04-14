@@ -114,6 +114,35 @@ public class ClimberArms extends SubsystemBase {
     return rightAngle;
   }
 
+  public void setLeftArmAngle(double angle) {
+    climberLeftEncoder.setPosition(angle / 360 * 64);
+  }
+
+  public void setRightArmAngle(double angle) {
+    climberRightEncoder.setPosition(angle / 360 * 64);
+  }
+
+  public double getRightArmCurrent() {
+    return climberMotorSideR.getOutputCurrent();
+  }
+
+  public double getLeftArmCurrent() {
+    return climberMotorSideL.getOutputCurrent();
+  }
+
+  public void setLeft(double value) {
+    climberMotorSideL.set(value);
+  }
+
+  public void setRight(double value) {
+    climberMotorSideR.set(value);
+  }
+
+  public void setArmsVertical() {
+    lastLeftArmPosition = 0;
+    lastRightArmPosition = 0;
+  }
+
   public void resetArms(){ // - faces back 47-40,  + faces forward 80-73
     if (getLeftArmAngle() < -40){
       climberMotorSideL.set(-0.35);

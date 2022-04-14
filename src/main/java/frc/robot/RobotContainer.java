@@ -79,6 +79,11 @@ public class RobotContainer {
     () -> climber.climbMain(operatorStick.getY()), climber);
   private final Command climberStop = new RunCommand(
     () -> climber.stopMain(), climber);
+  private final Command climberLeftCommand = new RunCommand(
+    () -> climber.climbLeft(operatorStick.getY()), climber);
+  private final Command climberRightCommand = new RunCommand(
+    () -> climber.climbRight(operatorStick.getY()), climber);
+  
 
 // Feeder Commands 
 
@@ -236,6 +241,10 @@ public class RobotContainer {
     new JoystickButton(operatorStick, Constants.ClimberArmsButtonBack).whileHeld(climberArmsBack);
 
     new JoystickButton(operatorStick, Constants.ClimberMainButtonDown).whileHeld(climberMainCommand);
+
+    new JoystickButton(operatorStick, Constants.ClimberLeftMainButton).whileHeld(climberLeftCommand);
+
+    new JoystickButton(operatorStick, Constants.ClimberRightMainButton).whileHeld(climberRightCommand);
 
     new JoystickButton(operatorStick, Constants.IntakeButton).whileHeld(intakeCommand);
 
