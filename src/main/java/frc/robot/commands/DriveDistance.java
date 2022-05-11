@@ -8,13 +8,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveDistance extends CommandBase {
-  private  Drivetrain mdrivetrain;
-  private  double requestedDistance;
+  private Drivetrain mdrivetrain;
+  private double requestedDistance;
+  private double speed;
 
   public DriveDistance(final Drivetrain drivetrain, final double distance) {
     // Use addRequirements() here to declare subsystem dependencies.
     mdrivetrain = drivetrain;
     requestedDistance = distance;
+    speed = 0.4;
+    addRequirements(mdrivetrain);
+  }
+
+  public DriveDistance(final Drivetrain drivetrain, final double distance, double speed) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    mdrivetrain = drivetrain;
+    requestedDistance = distance;
+    this.speed = speed;
     addRequirements(mdrivetrain);
   }
   
@@ -29,9 +39,9 @@ public class DriveDistance extends CommandBase {
   @Override
   public void execute() {
     if(requestedDistance >= 0) {
-      mdrivetrain.tankDrive(0.4, 0.4);
+      mdrivetrain.tankDrive(speed, speed);
     } else {
-      mdrivetrain.tankDrive(-0.4, -0.4);
+      mdrivetrain.tankDrive(-speed, -speed);
     }
   }
 

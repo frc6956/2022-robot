@@ -10,6 +10,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.util.CircularBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends SubsystemBase {
@@ -122,9 +124,15 @@ public class Shooter extends SubsystemBase {
     getRPM();
   }
 
+  public void shootLow() { // Sets speed of motors to the speed constants when called upon
+    ShooterMotorRight.set(0.20);
+    AuxShooterMotorRight.set(0.20);
+    getRPM();
+  }
+
   public void autoShoot() { // Sets speed of motors to the speed constants when called upon
-    ShooterMotorRight.set(0.5);
-    AuxShooterMotorRight.set(.75);
+    ShooterMotorRight.set(Constants.AutoShooterMotorRightSpeed);
+    AuxShooterMotorRight.set(Constants.AutoAuxShooterMotorRightSpeed);
     getRPM();
   }
 

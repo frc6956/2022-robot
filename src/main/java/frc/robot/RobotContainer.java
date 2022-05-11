@@ -58,6 +58,8 @@ public class RobotContainer {
     () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command intakeCommand3 = new RunCommand(
     () -> intake.intake(Constants.IntakeSpeed), intake);
+  private final Command intakeCommand7 = new RunCommand(
+    () -> intake.intake(Constants.IntakeSpeed), intake);
   private final Command intakeStop = new RunCommand(
     () -> intake.stop(), intake);
   private final Command intakeReverse = new RunCommand(
@@ -71,8 +73,10 @@ public class RobotContainer {
     () -> climberArms.climbSide(Constants.ClimberArmsReverseSpeed), climberArms);
   private final Command climberArmsBack= new RunCommand(
     () -> climberArms.climbSide(Constants.ClimberArmsSpeed), climberArms);
-  private final Command climberArmsStop = new RunCommand(
+  private final Command climberArmsHold = new RunCommand(
     () -> climberArms.hold(), climberArms);
+  private final Command climberArmsStop = new RunCommand(
+    () -> climberArms.stopSide(), climberArms);
     
 // Climber MAIN Commands
   private final Command climberMainCommand = new RunCommand(
@@ -97,12 +101,16 @@ public class RobotContainer {
     () -> feeder.feed(Constants.FeederMotorReverseSpeed), feeder);
   private final Command feederCommand2 = new RunCommand(
     () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
+  private final Command feederCommand3 = new RunCommand(
+    () -> feeder.feed(Constants.FeederMotorSpeed), feeder);
 
 //Shooter Commands
   private final Command shooterStop = new RunCommand(
     () -> shooter.stop(), shooter);
   private final Command shooterCommand = new RunCommand(
     () -> shooter.shoot(), shooter);
+  private final Command shooterLowCommand = new RunCommand(
+    () -> shooter.shootLow(), shooter);
   private final Command shooterCommand2 = new RunCommand(
     () -> shooter.autoShoot(), shooter);
   private final Command shooterCommand3 = new RunCommand(
@@ -115,12 +123,12 @@ public class RobotContainer {
     () -> drivetrain.getInAngleRange(vision.getX()));
   private final Command getInDistanceRange = new RunCommand(
     () -> drivetrain.getInRange(vision.getDistance()));
-  private final Command getInAllRange = new RunCommand(
+  private final Command getInRobotRange = new RunCommand(
     () -> drivetrain.getInAllRange(vision.getDistance(), vision.getX()));
    
 
   // Vision Commands
-  private final Command visionOn = new RunCommand(() -> vision.turnLEDOn(), vision);
+  private final Command visionOn = new RunWhenDisabledCommand(() -> vision.turnLEDOn(), vision);
   private final Command visionOff = new RunWhenDisabledCommand(() -> vision.turnLEDOff(), vision);
   
 
@@ -164,9 +172,9 @@ public class RobotContainer {
   private final Command shootStop = new ParallelCommandGroup(feederStop2, intakeStop2);
   private final Command shootStop2 = new ParallelCommandGroup(feederStop3, intakeStop3);
   private final Command autoTurn = new TurnDistance(drivetrain, 40);
-  private final Command turnRobot = new TurnAngle(drivetrain, gyro, 175);
+  private final Command turnRobot = new TurnAngle(drivetrain, gyro, 180);
   private final Command driveBack3 = new DriveDistance(drivetrain, -20);
-  private final Command driveBack4 = new DriveDistance(drivetrain, -20);
+  private final Command driveBack4 = new DriveDistance(drivetrain, -20, 0.6);
   private final Command getAutoInRange = new RunCommand(
     () -> drivetrain.getInRange(vision.getDistance()));
   private final Command getAutoAngleRange = new RunCommand(
@@ -175,7 +183,7 @@ public class RobotContainer {
     () -> climberArms.climbSide(0), climberArms);
   
   private final Command auto2BallDrive = new SequentialCommandGroup(climberArmsAuto2.withTimeout(.1),
-    intakeForward.withTimeout(10), shootStop.withTimeout(0.1), turnRobot.withTimeout(6), getAutoAngleRange.withTimeout(3), 
+    intakeForward.withTimeout(10), shootStop.withTimeout(0.1), turnRobot.withTimeout(6), getAutoAngleRange.withTimeout(1), 
     getAutoInRange.withTimeout(4), shooterCommand6.withTimeout(1.5),shoot2.withTimeout(1.5), shootStop2.withTimeout(0.1), driveBack4.withTimeout(3));
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -185,8 +193,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    m_chooser.setDefaultOption("1 Ball Auto", autoShootDrive);
-    m_chooser.addOption("2 Ball Auto", auto2BallDrive);
+    m_chooser.setDefaultOption("2 Ball Auto", auto2BallDrive);
+    m_chooser.addOption("1 Ball Auto", autoShootDrive);
   
     SmartDashboard.putData(m_chooser);
 
@@ -194,7 +202,7 @@ public class RobotContainer {
 
     intake.setDefaultCommand(intakeStop);
 
-    climberArms.setDefaultCommand(climberArmsStop);
+    climberArms.setDefaultCommand(climberArmsHold);
 
     climber.setDefaultCommand(climberStop);
 
@@ -252,11 +260,17 @@ public class RobotContainer {
 
     new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(getInDistanceRange);
 
-    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAllRange);
+    new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(getInAngleRange);
 
     new JoystickButton(leftStick, Constants.InRangeButton).whileHeld(visionOn);
 
     new JoystickButton(rightStick, Constants.InRangeButton).whileHeld(visionOn);
+
+    new JoystickButton(operatorStick, Constants.ShooterLowButton).whileHeld(shooterLowCommand);
+
+    new JoystickButton(operatorStick, Constants.ShooterLowButton).whileHeld(intakeCommand7);
+
+    new JoystickButton(operatorStick, Constants.ShooterLowButton).whileHeld(feederCommand3);
 
 
     new Trigger(()-> DriverStation.isAutonomous()).whileActiveContinuous(visionOn);

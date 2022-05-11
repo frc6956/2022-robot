@@ -19,11 +19,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision extends SubsystemBase {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry tx = (table.getEntry("tx"));
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
   NetworkTableEntry ledMode = table.getEntry("ledMode");
-
+  NetworkTableEntry tv = table.getEntry("tv");
 
   
   /** Creates a new Vision. */
@@ -45,22 +45,31 @@ public class Vision extends SubsystemBase {
 
   double distance;
   double ringHeight = 104.0; //104
-  double visionHeight = 23.5; //34
-  double fixedVisionAngle = 50;
+  double visionHeight = 26.0; //34
+  double visionOffset = 13.0;
+  double fixedVisionAngle = 33;
   double differenceAngleY = ty.getDouble(0.0);
   double totalAngleY = fixedVisionAngle+differenceAngleY;
   boolean inRange;
+  boolean inAngleRange;
   
 
   public void calculateDistance() { // finds the distance based off of the fixed angle and heights
     differenceAngleY = ty.getDouble(0.0);
     totalAngleY = fixedVisionAngle+differenceAngleY;
-    distance =  (ringHeight-visionHeight) / Math.atan((totalAngleY*Math.PI)/180);
+    distance =  (ringHeight-visionHeight) / Math.atan((totalAngleY*Math.PI)/180) - visionOffset;
     if (Constants.minumumRange<distance && distance<Constants.maximumRange) {
       inRange = true;
     } else {
       inRange = false;
     }
+
+    if (getX() > -1.5 && getX() < 1.5) {
+      inAngleRange = true;
+    } else {
+      inAngleRange = false;
+    }
+
     System.out.println(distance);
   }
 
@@ -81,6 +90,18 @@ public class Vision extends SubsystemBase {
   public double getX(){
     double xAngle = tx.getDouble(0.0);
     return xAngle;
+  }
+
+  public boolean isValid() {
+    return tv.getBoolean(false);
+  }
+
+  public boolean inRange() {
+    return (isValid() && inRange);
+  }
+
+  public boolean inAngleRange() {
+    return (isValid() && inAngleRange);
   }
 
 

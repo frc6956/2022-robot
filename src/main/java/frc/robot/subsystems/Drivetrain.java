@@ -37,18 +37,15 @@ private RelativeEncoder drivetrainEncoderR1;
     drivetrainMotorL1.setInverted(false);
     drivetrainMotorL2.follow(drivetrainMotorL1);
 
-    
-
     resetPosition();
   }
+
   double position;
   public void tankDrive(double leftSpeed, double rightSpeed) {
-
     mainRobotDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void getInRange(double distance){
-    
     if (Constants.autoMinumumRange>distance) {
       tankDrive(-0.3, -0.3);
     } else if (Constants.autoMaximumRange<distance){
@@ -59,10 +56,21 @@ private RelativeEncoder drivetrainEncoderR1;
   }
 
 
+
   public void getInAngleRange(double x){
-    if ( x > 1.5) {
+    double offset = 2.0;
+    double multiplier = 0.1;
+    double output = Math.min(0.4, Math.abs((x + offset) * multiplier));
+
+    output = Math.copySign(output, x + offset);
+
+    tankDrive(output, -output);
+  }
+
+  public void getInAngleRange2(double x){
+    if ( x > 0) {
       tankDrive(0.4, -0.4);
-    } else if ( x < -1.5){
+    } else if ( x < -4){
       tankDrive(-0.4, 0.4);
     } else {
       tankDrive(0, 0);
@@ -71,13 +79,13 @@ private RelativeEncoder drivetrainEncoderR1;
   }
 
   public void getInAllRange(double distance, double xAngle){
-    if (Constants.autoMinumumRange>distance) {
-      tankDrive(-0.3, -0.3);
-    } else if (Constants.autoMaximumRange<distance){
-      tankDrive(0.3, 0.3);
-    } else if ( xAngle > 1) {
+    if (xAngle > 1.5) {
+      tankDrive(-0.4, -0.4);
+    } else if (xAngle < -1.5) {
+      tankDrive(0.4, 0.4);
+    } else if (Constants.autoMinumumRange>distance) {
       tankDrive(0.4, -0.4);
-    } else if ( xAngle < -3){
+    } else if (Constants.autoMaximumRange<distance) {
       tankDrive(-0.4, 0.4);
     } else {
       tankDrive(0, 0);

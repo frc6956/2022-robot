@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ClimberArms extends SubsystemBase {
@@ -80,18 +82,21 @@ public class ClimberArms extends SubsystemBase {
   }
 
   public void stopSide() {
-    climberMotorSideR.set(0);
-    climberMotorSideL.set(0);
+    climbSide(0);
   }
 
   public void hold() {
-    double leftArmPosition = getLeftArmPosition();
-    leftErrorPosition = leftArmPosition - lastLeftArmPosition;
-    climberMotorSideL.set(-leftErrorPosition*2);
+    if(DriverStation.getStickButton(Constants.OperatorPort, Constants.ClimberMainButtonDown)) {
+      stopSide();
+    } else {
+      double leftArmPosition = getLeftArmPosition();
+      leftErrorPosition = leftArmPosition - lastLeftArmPosition;
+      climberMotorSideL.set(-leftErrorPosition*2);
 
-    double rightArmPosition = getRightArmPosition();
-    rightErrorPosition = rightArmPosition - lastRightArmPosition;
-    climberMotorSideR.set(-rightErrorPosition*2);
+      double rightArmPosition = getRightArmPosition();
+      rightErrorPosition = rightArmPosition - lastRightArmPosition;
+      climberMotorSideR.set(-rightErrorPosition*2);
+    }
   }
 
   public double getLeftArmPosition(){
