@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.util.CircularBuffer;
+//import edu.wpi.first.util.CircularBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends SubsystemBase {
@@ -20,7 +20,7 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax ShooterMotorLeft;
   private CANSparkMax AuxShooterMotorRight;
   private CANSparkMax AuxShooterMotorLeft;
-  private RelativeEncoder shooterMainEncoder; // creates encoder for one of the motors
+  private static RelativeEncoder shooterMainEncoder; // creates encoder for one of the motors
   private RelativeEncoder auxRelativeEncoder; // creates encoder for one of the motors
 
   private SparkMaxPIDController shooterPIDController;
@@ -143,7 +143,7 @@ public class Shooter extends SubsystemBase {
     AuxShooterMotorLeft.set(0);
   }
 
-  public double getRPM() { // gets the rpm of one of the shooter motors from the sparkMax encoder
+  public static double getRPM() { // gets the rpm of one of the shooter motors from the sparkMax encoder
     return shooterMainEncoder.getVelocity();
   }
 

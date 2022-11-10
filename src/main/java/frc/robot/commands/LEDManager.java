@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDs;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
 public class LEDManager extends CommandBase {
     private  LEDs led;
@@ -30,9 +31,11 @@ public class LEDManager extends CommandBase {
         led.rainbow();
       } else {
       
-        if (DriverStation.getStickButton(3, Constants.LEDCelebrateButton)){
+        if (DriverStation.getStickButton(0, Constants.LEDCelebrateButton)){
           led.superRainbow();
-        } else if (DriverStation.isAutonomous()){
+        } /*else if (DriverStation.getStickButton(0, Constants.ShooterButton)){
+          led.shooterColorSpeed(Shooter.getRPM()); ///comment this if statement for competitions ie B3
+        }*/else if (DriverStation.isAutonomous()){
           System.out.print(DriverStation.getAlliance());
             if (DriverStation.getAlliance() == Alliance.Blue){
               led.autonPulseBlue();
@@ -43,7 +46,7 @@ public class LEDManager extends CommandBase {
               led.setAllGreen();
             }
         } // end of auton
-        else{     
+        else{     //if the robot is enabled 
            led.setAllGreen();}
       } // end of if not disabled
      } else {

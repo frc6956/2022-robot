@@ -18,6 +18,8 @@ public class LEDs extends SubsystemBase {
   
   double m_yellowGreenFirstPixelHue = 0;
 
+  double m_goldGreenFirstPixelHue = 0;
+
   double m_rainbowFirstPixelHue = 0;
 
   double m_autonRPulseBlue = 0;
@@ -65,7 +67,7 @@ public class LEDs extends SubsystemBase {
   public void setAllGold(){ // sets all LEDs to gold
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the RGB values for gold
-      m_ledBuffer.setRGB(i, 255, 215, 0);
+      m_ledBuffer.setRGB(i, 50, 20, 0);
    }
    
    m_led.setData(m_ledBuffer);
@@ -84,32 +86,67 @@ public class LEDs extends SubsystemBase {
   public void setRainbowColors(){ // sets all LEDs to pride colors
     for (var i = 0; i < (m_ledBuffer.getLength())/6; i++) {
       // Sets the specified LED to the RGB values for red
-      m_ledBuffer.setRGB(i, 209, 34, 41);
+      m_ledBuffer.setRGB(i, 75, 15, 10); // 209, 34, 41
     }
 
    for (var i = (m_ledBuffer.getLength())/6; i < (m_ledBuffer.getLength())/6*2; i++) {
       // Sets the specified LED to the RGB values for orange
-      m_ledBuffer.setRGB(i, 246, 138, 30);
+      m_ledBuffer.setRGB(i, 73, 27, 7); // 246, 138, 30
     }
 
    for (var i = (m_ledBuffer.getLength())/6*2; i < (m_ledBuffer.getLength())/6*3; i++) {
       // Sets the specified LED to the RGB values for yellow
-      m_ledBuffer.setRGB(i, 253, 224, 26);
+      m_ledBuffer.setRGB(i, 95, 55, 7); // 253, 224, 26
     }
 
    for (var i = (m_ledBuffer.getLength())/6*3; i < (m_ledBuffer.getLength())/6*4; i++) {
       // Sets the specified LED to the RGB values for green
-      m_ledBuffer.setRGB(i, 0, 121, 64);
+      m_ledBuffer.setRGB(i, 0, 40, 16); //0, 121, 64
     }
 
    for (var i = (m_ledBuffer.getLength())/6*4; i < (m_ledBuffer.getLength())/6*5; i++) {
       // Sets the specified LED to the RGB values for blue
-      m_ledBuffer.setRGB(i, 36, 64, 142);
+      m_ledBuffer.setRGB(i, 9, 16, 45); //36, 64, 142
     }
 
    for (var i = (m_ledBuffer.getLength())/6*5; i < (m_ledBuffer.getLength())/6*6; i++) {
       // Sets the specified LED to the RGB values for purple
-      m_ledBuffer.setRGB(i, 115, 41, 130);
+      m_ledBuffer.setRGB(i, 30, 15, 46);//115, 41, 130
+   }
+   
+   m_led.setData(m_ledBuffer);
+  }
+
+  
+  public void setGreenAndGold(){ // sets all LEDs to greed and gold 
+    for (var i = 0; i < (m_ledBuffer.getLength())/6; i++) {
+      // Sets the specified LED to the RGB values for green
+      m_ledBuffer.setRGB(i, 0, 255, 0); // 209, 34, 41
+    }
+
+   for (var i = (m_ledBuffer.getLength())/6; i < (m_ledBuffer.getLength())/6*2; i++) {
+      // Sets the specified LED to the RGB values for gold
+      m_ledBuffer.setRGB(i, 50, 20, 0); // 246, 138, 30
+    }
+
+   for (var i = (m_ledBuffer.getLength())/6*2; i < (m_ledBuffer.getLength())/6*3; i++) {
+      // Sets the specified LED to the RGB values for green
+      m_ledBuffer.setRGB(i, 0, 255, 0); // 253, 224, 26
+    }
+
+   for (var i = (m_ledBuffer.getLength())/6*3; i < (m_ledBuffer.getLength())/6*4; i++) {
+      // Sets the specified LED to the RGB values for gold
+      m_ledBuffer.setRGB(i, 50, 20, 0); //0, 121, 64
+    }
+
+   for (var i = (m_ledBuffer.getLength())/6*4; i < (m_ledBuffer.getLength())/6*5; i++) {
+      // Sets the specified LED to the RGB values for green
+      m_ledBuffer.setRGB(i, 0, 255, 0); //36, 64, 142
+    }
+
+   for (var i = (m_ledBuffer.getLength())/6*5; i < (m_ledBuffer.getLength())/6*6; i++) {
+      // Sets the specified LED to the RGB values for gold
+      m_ledBuffer.setRGB(i, 50, 20, 0);//115, 41, 130
    }
    
    m_led.setData(m_ledBuffer);
@@ -117,7 +154,7 @@ public class LEDs extends SubsystemBase {
 
 
 
-   public void setYellowToGreen(){ // runs LEDs that change colors from red to green 
+  public void setYellowToGreen(){ // runs LEDs that change colors from red to green 
       // For every pixel
       for (var i = 0; i < m_ledBuffer.getLength(); i++) {
         // Calculate the hue - hue is easier for rainbows because the color
@@ -128,41 +165,59 @@ public class LEDs extends SubsystemBase {
       
       }
       // Increase by to make the rainbow "move"
-      m_yellowGreenFirstPixelHue += 2;
+    m_yellowGreenFirstPixelHue += 2;
       // Check bounds
-      m_yellowGreenFirstPixelHue %= 55;
+    m_yellowGreenFirstPixelHue %= 55;
   }
 
-  public void autonPulseRed(){ // runs LEDs that change colors from red to green 
-    /*
+
+  public void pulseGreenAndGold(){ // runs LEDs that change colors from green to gold
+    // For every pixel
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      final int hue = ((int)(m_goldGreenFirstPixelHue + (i * 55 / m_ledBuffer.getLength())) % 55) + 36; // hue is green to gold
+      // Set the value
+      m_ledBuffer.setHSV(i, hue, 100, 64);
+    
+    }
+    // Increase by to make the rainbow "move"
+    m_goldGreenFirstPixelHue += 1;
+    // Check bounds
+    m_goldGreenFirstPixelHue %= 55;
+  }
+
+
+  public void autonPulseRed(){ // runs LEDs that change colors from red to white 
+    
     // For every pixel
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
   
       // shape is a circle so only one value needs to precess
-      final int saturation = ((int)(m_autonRPulseRed + (i * 45 / m_ledBuffer.getLength())) % 45) + 100; // hue is red to green
+      final int saturation = ((int)(m_autonRPulseRed + (i * 155 / m_ledBuffer.getLength())) % 155) + 100; // saturation is red to green
       // Set the value
-      m_ledBuffer.setHSV(i, 0, saturation, 64);
+      m_ledBuffer.setHSV(i, 16, saturation, 64);
     
     }
     // Increase by to make the rainbow "move"
     m_autonRPulseRed += 2;
     // Check bounds
-    m_autonRPulseRed %= 45;
-    */
+    m_autonRPulseRed %= 255;
     
+      /*
       for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-        // Sets the specified LED to the RGB values for gold
+        // Sets the specified LED to the RGB values for red
         m_ledBuffer.setRGB(i, 205, 0, 0);
-      }
+      }*/
   }
 
-  public void autonPulseBlue(){ // runs LEDs that change colors from red to green 
-    /*
+  public void autonPulseBlue(){ // runs LEDs that change colors from blue to white 
+    
     // For every pixel
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
   
       // shape is a circle so only one value needs to precess
-      final int saturation = ((int)(m_autonRPulseBlue + (i * 45 / m_ledBuffer.getLength())) % 45) + 100; // hue is red to green
+      final int saturation = ((int)(m_autonRPulseBlue + (i * 155 / m_ledBuffer.getLength())) % 155) + 100; // hue is red to green
       // Set the value
       m_ledBuffer.setHSV(i, 75, saturation, 64);
     
@@ -170,12 +225,12 @@ public class LEDs extends SubsystemBase {
     // Increase by to make the rainbow "move"
     m_autonRPulseBlue += 2;
     // Check bounds
-    m_autonRPulseBlue %= 45;
-    */
+    m_autonRPulseBlue %= 255;
+    /*
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the RGB values for gold
       m_ledBuffer.setRGB(i, 0, 0, 255);
-    }
+    }*/
 }
 
 
@@ -190,7 +245,7 @@ public class LEDs extends SubsystemBase {
     
     }
     // Increase by to make the rainbow "move"
-    m_rainbowFirstPixelHue += 3;
+    m_rainbowFirstPixelHue += 2; //original was 3
     // Check bounds
     m_rainbowFirstPixelHue %= 180;
 }
