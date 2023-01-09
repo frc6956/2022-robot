@@ -58,7 +58,16 @@ public class LEDs extends SubsystemBase {
   public void setAllGreen(){ // sets all LEDs to green
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the RGB values for green
-      m_ledBuffer.setRGB(i, 0, 255, 0);
+      m_ledBuffer.setRGB(i, 0, 255, 0); // 0
+   }
+   
+   m_led.setData(m_ledBuffer);
+  }
+
+  public void setAllPink(){ // sets all LEDs to pink
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for pink
+      m_ledBuffer.setRGB(i, 255, 0, 70); // 255, 0, 70
    }
    
    m_led.setData(m_ledBuffer);
@@ -194,7 +203,7 @@ public class LEDs extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
   
       // shape is a circle so only one value needs to precess
-      final int saturation = ((int)(m_autonRPulseRed + (i * 155 / m_ledBuffer.getLength())) % 155) + 100; // saturation is red to green
+      final int saturation = ((int)(m_autonRPulseRed + (i * 55 / m_ledBuffer.getLength())) % 55) + 200; // saturation is red to green
       // Set the value
       m_ledBuffer.setHSV(i, 16, saturation, 64);
     

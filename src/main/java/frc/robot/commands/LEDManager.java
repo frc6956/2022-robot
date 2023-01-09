@@ -42,9 +42,8 @@ public class LEDManager extends CommandBase {
             }
             else if (DriverStation.getAlliance() == Alliance.Red){
               led.autonPulseRed();
-            } else {
-              led.setAllGreen();
-            }
+            } else led.setAllGreen();
+          
         } // end of auton
         else{     //if the robot is enabled 
            led.setAllGreen();}

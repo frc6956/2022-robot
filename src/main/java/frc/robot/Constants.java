@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -15,7 +17,7 @@ package frc.robot;
  */
 public final class Constants {
   // Driver Station Ports
-  public static final int OperatorPort = 3;
+  public static final int OperatorPort = 0;
   public static final int LeftDriverPort = 1;
   public static final int RightDriverPort = 2;
   // Intake Constants
@@ -36,8 +38,8 @@ public final class Constants {
   public static final int AuxShooterMoterLeftID = 15;
   public static final int AuxShooterMoterRightID = 16;
   //public static final double ShooterMotorLeftSpeed = 0.45; //50
-  public static final double ShooterMotorRightSpeed = 0.40; //50 // auton 50 75
-  public static final double AuxShooterMotorRightSpeed = 0.60; //75
+  public static final double ShooterMotorRightSpeed = 0.40; //50 // auton 50 75 regular 40
+  public static final double AuxShooterMotorRightSpeed = 0.60; //75 regular 60
   public static final double AutoShooterMotorRightSpeed = 0.40;
   public static final double AutoAuxShooterMotorRightSpeed = 0.60;
   // Drivetrain Constants
@@ -81,6 +83,20 @@ public final class Constants {
   //ideal is 110
   public static final int autoMinumumRange = 98; // 107
   public static final int autoMaximumRange = 102; // 115
+
+
+  //PID Constants for Path Planning
+  public static final double ksVolts = 0.554;
+  public static final double kvVoltSecondsPerMeter = 1.595;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.137;
+  public static final double kTrackwidthMeters = 0.53; 
+  public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+
+  public static final double kMaxSpeedMetersPerSecond = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+  public static final double kRamseteB = 2;
+  public static final double kRamseteZeta = 0.7;
 
   // new tested min = __in from vision target (parallel to ground)
   // new tested max = 80in from vision target (parallel to ground)
