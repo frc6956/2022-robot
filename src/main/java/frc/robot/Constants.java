@@ -71,6 +71,11 @@ public final class Constants {
   public static final int ClimberLeftMainButton = 6;
   public static final int ClimberRightMainButton = 5;
   public static final int ShooterLowButton = 7;
+  public static final int ApriltagButton = 11;
+  public static final int VisionTapeButton = 12;
+  public static final int ClimberMainPosition = 3;
+  public static final int ClimberMainPositionHigh = 4;
+  public static final int ClimberMainReturnPosition = 2;
   // Range Constants
   /*
 
@@ -78,25 +83,35 @@ public final class Constants {
 
   */
   //ideal is 110
-  public static final int minumumRange = 98; // 103
-  public static final int maximumRange = 107; // 120
+  public static final int minumumRange = 36; // 103
+  public static final int maximumRange = 40; // 120
   //ideal is 110
-  public static final int autoMinumumRange = 98; // 107
-  public static final int autoMaximumRange = 102; // 115
+  public static final int autoMinumumRange = 36; // 107 //98
+  public static final int autoMaximumRange = 40; // 115 // 102
+
+  public static final int getInPositionNum = 55;
 
 
   //PID Constants for Path Planning
-  public static final double ksVolts = 0.554;
-  public static final double kvVoltSecondsPerMeter = 1.595;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.137;
-  public static final double kTrackwidthMeters = 0.53; 
+  public static final double ksVolts = (0.10184 + 0.14712 + 0.15174 + 0.20941 + 0.20858)/5;
+  public static final double kvVoltSecondsPerMeter = (1.289 + 1.2671 + 1.2599 + 1.3173 + 1.3129)/5;
+  public static final double kaVoltSecondsSquaredPerMeter = (0.68114 + 0.66353 + 0.65203 + 0.20653 + 0.23054)/5;
+  public static final double kTrackwidthMeters = 0.56515; 
   public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
   public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
 
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
+
+  public static final double kPDriveVel = (1.3185 + 1.5731 + 1.564 + 1.4618 + 1.484)/5;
+
+
+  //PID coefficients
+  //public static final double kD=1;
+  //public static final double kI=1;
+  //public static final double kP=1;
 
   // new tested min = __in from vision target (parallel to ground)
   // new tested max = 80in from vision target (parallel to ground)

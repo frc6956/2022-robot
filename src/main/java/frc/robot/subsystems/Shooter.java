@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private CANSparkMax ShooterMotorRight; // Creates new motor
   private CANSparkMax ShooterMotorLeft;
-  private CANSparkMax AuxShooterMotorRight;
+  //fix spark private CANSparkMax AuxShooterMotorRight;
   private CANSparkMax AuxShooterMotorLeft;
   private static RelativeEncoder shooterMainEncoder; // creates encoder for one of the motors
   private RelativeEncoder auxRelativeEncoder; // creates encoder for one of the motors
@@ -39,26 +39,28 @@ public class Shooter extends SubsystemBase {
     ShooterMotorLeft = new CANSparkMax(Constants.ShooterMotorLeftID, MotorType.kBrushless);
     ShooterMotorRight = new CANSparkMax(Constants.ShooterMotorRightID, MotorType.kBrushless);
     AuxShooterMotorLeft = new CANSparkMax(Constants.AuxShooterMoterLeftID, MotorType.kBrushless);
-    AuxShooterMotorRight = new CANSparkMax(Constants.AuxShooterMoterRightID, MotorType.kBrushless);
+    //fix spark AuxShooterMotorRight = new CANSparkMax(Constants.AuxShooterMoterRightID, MotorType.kBrushless);
 
     ShooterMotorLeft.restoreFactoryDefaults();
     ShooterMotorRight.restoreFactoryDefaults();
     AuxShooterMotorLeft.restoreFactoryDefaults();
-    AuxShooterMotorRight.restoreFactoryDefaults();
+    //fix spark AuxShooterMotorRight.restoreFactoryDefaults();
 
      ShooterMotorLeft.enableVoltageCompensation(12);
      ShooterMotorRight.enableVoltageCompensation(12);
      AuxShooterMotorLeft.enableVoltageCompensation(12);
-     AuxShooterMotorRight.enableVoltageCompensation(12);
+     //fix spark AuxShooterMotorRight.enableVoltageCompensation(12);
 
      ShooterMotorRight.setInverted(true);
      ShooterMotorLeft.follow(ShooterMotorRight, true);
-     //AuxShooterMotorRight.follow(ShooterMotorRight, false);
-     AuxShooterMotorRight.setInverted(false);
-     AuxShooterMotorLeft.follow(AuxShooterMotorRight, true);
+     ////fix spark AuxShooterMotorRight.follow(ShooterMotorRight, false);
+     //fix spark AuxShooterMotorRight.setInverted(false);
+     //AuxShooterMotorLeft.follow(//fix spark AuxShooterMotorRight, true);
+     AuxShooterMotorLeft.setInverted(true);
+
 
     shooterMainEncoder = ShooterMotorRight.getEncoder();
-    auxRelativeEncoder = AuxShooterMotorRight.getEncoder();
+    auxRelativeEncoder = AuxShooterMotorLeft.getEncoder();
     shooterPIDController = ShooterMotorRight.getPIDController();
 
     // set PID coefficients
@@ -120,26 +122,28 @@ public class Shooter extends SubsystemBase {
 
   public void shoot() { // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(Constants.ShooterMotorRightSpeed);
-    AuxShooterMotorRight.set(Constants.AuxShooterMotorRightSpeed);
+    //fix spark AuxShooterMotorRight.set(Constants.AuxShooterMotorRightSpeed);
+    AuxShooterMotorLeft.set(Constants.AuxShooterMotorRightSpeed);
     getRPM();
   }
 
   public void shootLow() { // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(0.20);
-    AuxShooterMotorRight.set(0.20);
+    //fix spark AuxShooterMotorRight.set(0.20);
+    AuxShooterMotorLeft.set(0.20);
     getRPM();
   }
 
   public void autoShoot() { // Sets speed of motors to the speed constants when called upon
     ShooterMotorRight.set(Constants.AutoShooterMotorRightSpeed);
-    AuxShooterMotorRight.set(Constants.AutoAuxShooterMotorRightSpeed);
+    //fix spark AuxShooterMotorRight.set(Constants.AutoAuxShooterMotorRightSpeed);
     getRPM();
   }
 
   public void stop() { // Stops the motors when calle upon
     ShooterMotorLeft.set(0);
     ShooterMotorRight.set(0);
-    AuxShooterMotorRight.set(0);
+    //fix spark AuxShooterMotorRight.set(0);
     AuxShooterMotorLeft.set(0);
   }
 

@@ -73,6 +73,15 @@ public class LEDs extends SubsystemBase {
    m_led.setData(m_ledBuffer);
   }
 
+   public void setAllBlue(){ // sets all LEDs to pink
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the RGB values for blue
+      m_ledBuffer.setRGB(i, 0, 0, 255); // 
+   }
+   
+   m_led.setData(m_ledBuffer);
+  }
+
   public void setAllGold(){ // sets all LEDs to gold
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the RGB values for gold
@@ -203,21 +212,15 @@ public class LEDs extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
   
       // shape is a circle so only one value needs to precess
-      final int saturation = ((int)(m_autonRPulseRed + (i * 55 / m_ledBuffer.getLength())) % 55) + 200; // saturation is red to green
+      final int value = ((int)(m_autonRPulseRed + (i * 55 / m_ledBuffer.getLength())) % 55) + 200; 
       // Set the value
-      m_ledBuffer.setHSV(i, 16, saturation, 64);
+      m_ledBuffer.setHSV(i, 0, value, 250);
     
     }
     // Increase by to make the rainbow "move"
-    m_autonRPulseRed += 2;
+    m_autonRPulseRed += 1;
     // Check bounds
     m_autonRPulseRed %= 255;
-    
-      /*
-      for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-        // Sets the specified LED to the RGB values for red
-        m_ledBuffer.setRGB(i, 205, 0, 0);
-      }*/
   }
 
   public void autonPulseBlue(){ // runs LEDs that change colors from blue to white 
@@ -226,13 +229,13 @@ public class LEDs extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
   
       // shape is a circle so only one value needs to precess
-      final int saturation = ((int)(m_autonRPulseBlue + (i * 155 / m_ledBuffer.getLength())) % 155) + 100; // hue is red to green
+      final int value = ((int)(m_autonRPulseBlue + (i * 155 / m_ledBuffer.getLength())) % 55) + 90; // hue is red to green
       // Set the value
-      m_ledBuffer.setHSV(i, 75, saturation, 64);
+      m_ledBuffer.setHSV(i, 120, 60, value);
     
     }
     // Increase by to make the rainbow "move"
-    m_autonRPulseBlue += 2;
+    m_autonRPulseBlue += 3;
     // Check bounds
     m_autonRPulseBlue %= 255;
     /*
@@ -250,11 +253,11 @@ public class LEDs extends SubsystemBase {
       // shape is a circle so only one value needs to precess
       final int hue = ((int)(m_rainbowFirstPixelHue) + (i * 180 / m_ledBuffer.getLength())) % 180; // hue is red to green
       // Set the value
-      m_ledBuffer.setHSV(i, hue, 255, 128);
+      m_ledBuffer.setHSV(i, hue, 255, 64); // s 255, v 128
     
     }
     // Increase by to make the rainbow "move"
-    m_rainbowFirstPixelHue += 2; //original was 3
+    m_rainbowFirstPixelHue += 1; //original was 2
     // Check bounds
     m_rainbowFirstPixelHue %= 180;
 }

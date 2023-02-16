@@ -47,17 +47,20 @@ public class ClimberArms extends SubsystemBase {
     lastRightArmPosition = getRightArmPosition();
 
     climberMotorSideL.getOutputCurrent();
+
+    resetArmPosition();
   }
 
 
 
 
   public void climbSide(double speed) {
-    climberMotorSideR.set(-speed*.5);
-    climberMotorSideL.set(-speed*.5);
+    climberMotorSideR.set(-speed*.75);
+    climberMotorSideL.set(-speed*.75);
     lastRightArmPosition = getRightArmPosition();
     lastLeftArmPosition = getLeftArmPosition();
   }
+  
 
   public void climbSideAndHold(double speed) {
     double leftArmPosition = getLeftArmPosition();
@@ -158,11 +161,18 @@ public class ClimberArms extends SubsystemBase {
     // add right side
   }
 
+  public void resetArmPosition(){
+      climberRightEncoder.setPosition(0);
+      climberLeftEncoder.setPosition(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Right Arm Angle", getRightArmAngle());
     SmartDashboard.putNumber("Left Arm Angle", getLeftArmAngle());
+    SmartDashboard.putNumber("mahRight Arm Position", getRightArmPosition());
+    SmartDashboard.putNumber("mahLeft Arm Position", getLeftArmPosition());
     SmartDashboard.putNumber("Right Arm Current", climberMotorSideR.getOutputCurrent());
     SmartDashboard.putNumber("Left Arm Current", climberMotorSideL.getOutputCurrent());
   }

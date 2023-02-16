@@ -38,7 +38,7 @@ public class LEDManager extends CommandBase {
         }*/else if (DriverStation.isAutonomous()){
           System.out.print(DriverStation.getAlliance());
             if (DriverStation.getAlliance() == Alliance.Blue){
-              led.autonPulseBlue();
+              led.setAllBlue();
             }
             else if (DriverStation.getAlliance() == Alliance.Red){
               led.autonPulseRed();

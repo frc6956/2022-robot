@@ -3,23 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-//import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.robot.subsystems.ClimberArms;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
 
-public class Shoot extends CommandBase {
-  private Intake intake;
-  private Feeder feeder;
-  private Shooter shooter;
-  private double minShootSpeed = 2500;
 
-  /** Creates a new Shoot. */
-  public Shoot(Intake intake, Feeder feeder, Shooter shooter) {
-    addRequirements(intake, feeder, shooter);
-    this.intake = intake;
-    this.feeder = feeder;
-    this.shooter = shooter;
+
+public class ResetArms extends CommandBase {
+
+  ClimberArms climberArms;
+  boolean finished = false;
+
+
+  /** Creates a new ResetArms. */
+  public ResetArms(ClimberArms climberArms) {
+    addRequirements(climberArms);
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.climberArms = climberArms;
   }
 
   // Called when the command is initially scheduled.
@@ -29,27 +28,23 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shoot();
-    if(shooter.getRPM() > minShootSpeed) {
-      intake.intake();
-      feeder.feed();
+    if (climberArms.getLeftArmCurrent() < 30 || climberArms.getRightArmCurrent() < 30){
+      climberArms.climbSide(0.3);
     } else {
-      intake.stop();
-      feeder.stop();
+      climberArms.resetArmPosition();
+      finished = true;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
-    feeder.stop();
-    shooter.stop();
+    climberArms.climbSide(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return finished;
   }
 }
